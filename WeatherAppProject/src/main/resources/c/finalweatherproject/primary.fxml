@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.PrimaryController">
+   <top>
+      <HBox prefHeight="0.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="updatedLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Updated:" wrappingWidth="247.0">
+               <HBox.margin>
+                  <Insets left="3.0" top="3.0" />
+               </HBox.margin>
+            </Text>
+            <TextField fx:id="search" prefHeight="25.0" prefWidth="250.0" text="Enter Zipcode, or City, State">
+               <HBox.margin>
+                  <Insets left="126.0" top="3.0" />
+               </HBox.margin>
+            </TextField>
+            <Button fx:id="goButton" mnemonicParsing="false" onAction="#updateCity" prefHeight="25.0" prefWidth="49.0" text="Go">
+               <HBox.margin>
+                  <Insets left="3.0" top="3.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#initWindow" prefHeight="25.0" prefWidth="64.0" text="Settings">
+               <HBox.margin>
+                  <Insets left="254.0" top="2.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="600.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="cityNameLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Beverly, MA" textAlignment="CENTER" wrappingWidth="1000.0">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Text>
+            <Text fx:id="temperatureLabel" layoutX="10.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38°F" textAlignment="CENTER" wrappingWidth="1000.0001220703125">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="64.0" />
+               </font>
+            </Text>
+            <Text fx:id="weatherLabel" layoutX="10.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cloudy" textAlignment="CENTER" wrappingWidth="1000.0">
+               <font>
+                  <Font name="Trebuchet MS" size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="lowHighLabel" layoutX="10.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="L: 22°F     H: 43°F" textAlignment="CENTER" wrappingWidth="1000.0">
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
