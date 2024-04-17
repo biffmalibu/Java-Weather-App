@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.PrimaryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: lightgray;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.PrimaryController">
    <top>
       <HBox prefHeight="0.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +31,7 @@
                   <Insets left="3.0" top="3.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#initWindow" prefHeight="25.0" prefWidth="64.0" text="Settings">
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#openSettings" prefHeight="25.0" prefWidth="64.0" text="Settings">
                <HBox.margin>
                   <Insets left="254.0" top="2.0" />
                </HBox.margin>
@@ -67,19 +67,570 @@
             </Text>
             <HBox prefHeight="70.0" prefWidth="200.0">
                <children>
-                  <ScrollPane prefHeight="60.0" prefWidth="1000.0">
+                  <ScrollPane minHeight="110.0" prefHeight="110.0" prefWidth="885.0" vbarPolicy="NEVER">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="60.0" prefWidth="1001.0">
+                      <AnchorPane minHeight="100.0" minWidth="0.0" prefHeight="100.0" prefWidth="1924.0">
                            <children>
-                              <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="68.0" prefWidth="32.0">
+                              <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
-                                    <ImageView fitHeight="34.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Text fx:id="hour1" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img1" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin></ImageView>
+                                    <Text fx:id="hourly1" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="51.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour2" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img2" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly2" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="103.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour3" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img3" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly3" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="155.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour4" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img4" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly4" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="207.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour5" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img5" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly5" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="259.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour6" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img6" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly6" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="311.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour7" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img7" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly7" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="363.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour8" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img8" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly8" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="415.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour9" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img9" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly9" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="467.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour10" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img10" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly10" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="519.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour11" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img11" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly11" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="571.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour12" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img12" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly12" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="623.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour13" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img13" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly13" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="675.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour14" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img14" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly14" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="727.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour15" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img15" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly15" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="779.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour16" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img16" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly16" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="831.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour17" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img17" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly17" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="883.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour18" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img18" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly18" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="935.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour19" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img19" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly19" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="987.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour20" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img20" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly20" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1039.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour21" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img21" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly21" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1091.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour22" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img22" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly22" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1143.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour23" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img23" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly23" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1195.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour24" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img24" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly24" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1247.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour25" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img25" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly25" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1299.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour26" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img26" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly26" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1351.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour27" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img27" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly27" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1403.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour28" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img28" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly28" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1455.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour29" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img29" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly29" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1507.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour30" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img30" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly30" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1559.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour31" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img31" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly31" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1611.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour32" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img32" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly32" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1663.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour33" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img33" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly33" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1715.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour34" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img34" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly34" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1767.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour35" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img35" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly35" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1819.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour36" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img36" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly36" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="1871.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                                 <children>
+                                    <Text fx:id="hour37" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
+                                    <ImageView fx:id="img37" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <Text fx:id="hourly37" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38Of" textAlignment="CENTER" wrappingWidth="51.4765625">
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </Text>
                                  </children>
                               </VBox>
                            </children>
                         </AnchorPane>
                     </content>
+                     <HBox.margin>
+                        <Insets left="57.5" />
+                     </HBox.margin>
                   </ScrollPane>
                </children>
             </HBox>

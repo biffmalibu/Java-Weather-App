@@ -1,4 +1,8 @@
 package c.finalweatherproject;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /*
@@ -71,22 +75,22 @@ public class CityData {
     public void printCityData() {
         System.out.println("City Data:");
         System.out.println("----------");
-        System.out.println("Date and Time (dt): " + dt);
-        System.out.println("Sunrise: " + sunrise);
-        System.out.println("Sunset: " + sunset);
-        System.out.println("Current Temperature: " + curTemp);
-        System.out.println("Feels Like: " + feelsLike);
+        System.out.println("Date and Time (dt): " + resolveHourFromEpoch(dt));
+        System.out.println("Sunrise: " + resolveHourFromEpoch(sunrise) + " " + sunrise);
+        System.out.println("Sunset: " + resolveHourFromEpoch(sunset) + " " + sunset);
+        System.out.println("Current Temperature: " + getFahrenheit(curTemp));
+        System.out.println("Feels Like: " + getFahrenheit(feelsLike));
         System.out.println("Pressure: " + pressure);
         System.out.println("Humidity: " + humidity);
-        System.out.println("Dew Point: " + dewPoint);
+        System.out.println("Dew Point: " + getFahrenheit(dewPoint));
         System.out.println("UV Index (uvi): " + uvi);
         System.out.println("Cloud Cover: " + clouds);
         System.out.println("Visibility: " + visibility);
         System.out.println("Wind Speed: " + windSpeed);
         System.out.println("Wind Degrees: " + windDegrees);
         System.out.println("Wind Gust: " + windGust);
-        System.out.println("Minimum Temperature: " + tempMin);
-        System.out.println("Maximum Temperature: " + tempMax);
+        System.out.println("Minimum Temperature: " + getFahrenheit(tempMin));
+        System.out.println("Maximum Temperature: " + getFahrenheit(tempMax));
         System.out.println("Weather ID: " + weatherId);
         System.out.println("Weather Main: " + weatherMain);
         System.out.println("Weather Description: " + weatherDesc);
@@ -100,6 +104,19 @@ public class CityData {
         }
     }
 
+    private String resolveHourFromEpoch(int epoch) {
+        // Convert epoch time to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+        
+        // Format the hour part only
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
+        String hour = dateTime.format(formatter);
+        
+        return hour;
+    }
+    private int getFahrenheit(double k) {
+        return (int) Math.rint((k - 273.15) * 9/5 + 32);
+    }
     // Getters
     public int getDt() { return dt; }
 

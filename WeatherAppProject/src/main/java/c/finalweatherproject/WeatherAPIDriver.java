@@ -154,6 +154,7 @@ public class WeatherAPIDriver {
                     "&lon=" + longitude +
                     "&exclude=minutely" +
                     "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
+            System.out.println("URL: " + apiUrl);
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

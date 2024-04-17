@@ -1,4 +1,10 @@
 package c.finalweatherproject;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -49,12 +55,12 @@ public class CityHourly {
     @Override
     public String toString() {
         return "CityHourly{" +
-                "dt=" + dt +
-                ", curTemp=" + curTemp +
-                ", feelsLike=" + feelsLike +
+                "dt=" + resolveHourFromEpoch(dt) + " " + dt + 
+                ", curTemp=" + getFahrenheit(curTemp) +
+                ", feelsLike=" + getFahrenheit(feelsLike) +
                 ", pressure=" + pressure +
                 ", humidity=" + humidity +
-                ", dewPoint=" + dewPoint +
+                ", dewPoint=" + getFahrenheit(dewPoint) +
                 ", uvi=" + uvi +
                 ", clouds=" + clouds +
                 ", visibility=" + visibility +
@@ -65,6 +71,20 @@ public class CityHourly {
                 ", weatherMain='" + weatherMain + '\'' +
                 ", weatherDesc='" + weatherDesc + '\'' +
                 '}';
+    }
+    private int getFahrenheit(double k) {
+        return (int) Math.rint((k - 273.15) * 9/5 + 32);
+    }
+    
+    private String resolveHourFromEpoch(int epoch) {
+        // Convert epoch time to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+        
+        // Format the hour part only
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:00");
+        String hour = dateTime.format(formatter);
+        
+        return hour;
     }
     // Getters
     public int getDt() { return dt; }

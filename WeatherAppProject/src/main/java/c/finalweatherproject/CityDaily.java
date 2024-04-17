@@ -1,4 +1,10 @@
 package c.finalweatherproject;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -75,23 +81,23 @@ public class CityDaily {
     @Override
     public String toString() {
         return "CityDaily{" +
-                "dt=" + dt +
-                ", sunrise=" + sunrise +
-                ", sunset=" + sunset +
-                ", moonrise=" + moonrise +
-                ", moonset=" + moonset +
+                "dt=" + resolveHourFromEpoch(dt) +
+                ", sunrise=" + resolveHourFromEpoch(sunrise) + " " + sunrise +
+                ", sunset=" + resolveHourFromEpoch(sunset) + " " + sunset +
+                ", moonrise=" + resolveHourFromEpoch(moonrise) +
+                ", moonset=" + resolveHourFromEpoch(moonset) +
                 ", moonphase=" + moonphase +
                 ", summary='" + summary + '\'' +
-                ", temp=" + temp +
-                ", tempMin=" + tempMin +
-                ", tempMax=" + tempMax +
-                ", tempNight=" + tempNight +
-                ", tempEve=" + tempEve +
-                ", tempMorn=" + tempMorn +
-                ", feelsLikeDay=" + feelsLikeDay +
-                ", feelsLikeNight=" + feelsLikeNight +
-                ", feelsLikeEve=" + feelsLikeEve +
-                ", feelsLikeMorn=" + feelsLikeMorn +
+                ", temp=" + getFahrenheit(temp) +
+                ", tempMin=" + getFahrenheit(tempMin) +
+                ", tempMax=" + getFahrenheit(tempMax) +
+                ", tempNight=" + getFahrenheit(tempNight) +
+                ", tempEve=" + getFahrenheit(tempEve) +
+                ", tempMorn=" + getFahrenheit(tempMorn) +
+                ", feelsLikeDay=" + getFahrenheit(feelsLikeDay) +
+                ", feelsLikeNight=" + getFahrenheit(feelsLikeNight) +
+                ", feelsLikeEve=" + getFahrenheit(feelsLikeEve) +
+                ", feelsLikeMorn=" + getFahrenheit(feelsLikeMorn) +
                 ", pressure=" + pressure +
                 ", humidity=" + humidity +
                 ", dewPoint=" + dewPoint +
@@ -103,6 +109,22 @@ public class CityDaily {
                 ", clouds=" + clouds +
                 ", uvi=" + uvi +
                 '}';
+    }
+    private String resolveHourFromEpoch(int epoch) {
+        // Convert epoch time to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(epoch),
+                ZoneId.systemDefault()
+        );
+        
+        // Format the hour and minute parts
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
+        String hour = dateTime.format(formatter);
+        
+        return hour;
+    }
+    private int getFahrenheit(double k) {
+        return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
     // Getters
     public int getSunrise() { return sunrise; }
