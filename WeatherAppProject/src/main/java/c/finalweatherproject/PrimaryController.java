@@ -1,6 +1,9 @@
 package c.finalweatherproject;
 
+import com.google.gson.Gson;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,7 +30,13 @@ public class PrimaryController {
     
     CityData city;
     
-     @FXML
+    @FXML
+    private CheckBox cCheck;
+
+    @FXML
+    private CheckBox fCheck;
+    
+    @FXML
     private Text hour1;
 
     @FXML
@@ -376,13 +386,34 @@ public class PrimaryController {
 
     @FXML
     private ImageView img7;
-
+    
     @FXML
     private ImageView img8;
-
+    
     @FXML
     private ImageView img9;
 
+    @FXML
+    void initialize() throws IOException {
+
+    }
+
+
+    
+    @FXML 
+    void fClicked(ActionEvent event) {
+        if (cCheck.isSelected()) {
+            cCheck.setSelected(false);
+        }
+    }
+    
+    @FXML
+    void cClicked(ActionEvent event) {
+        if (fCheck.isSelected()) {
+            fCheck.setSelected(false);
+        }
+    }
+    
     @FXML
     void initWindow(ActionEvent event) {
         String degrees = "°F";
@@ -400,7 +431,7 @@ public class PrimaryController {
     @FXML
     void openSettings(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(App.class.getResource("secondary.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -421,7 +452,13 @@ public class PrimaryController {
 
             cityNameLabel.setText(location.getCityName());
             updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
-            weatherLabel.setText(city.getWeatherMain());
+            String main = city.getWeatherMain();
+            weatherLabel.setText(main);
+            if (main.equals("Clouds"))
+                if (!city.getWeatherDesc().equals("overcast clouds")) 
+                    weatherLabel.setText("Partly Cloudy");
+    
+            
             
             addImages();
             updateHourlyFieldsF();
