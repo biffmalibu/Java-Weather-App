@@ -30,4 +30,13 @@ public class Geolocation {
     public double getLat() {return lat;}
     public double getLon() {return lon;}
     
+    @Override
+    public String toString() {
+        return cityName + "\n"
+               + country + "\n"
+               + state + "\n"
+               + lat + "\n"
+               + lon + "\n";
+    }
+    
 }
