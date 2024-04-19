@@ -214,7 +214,7 @@ public class WeatherAPIDriver {
             return new Geolocation(name, country, state, lat, lon);
 
         } catch (Exception e) {
-            System.out.println("API Error while retrieving: " + zip);
+            System.out.println("Zip GEO: API Error while retrieving: " + zip);
             e.printStackTrace();
         }
         return null;
@@ -260,7 +260,7 @@ public class WeatherAPIDriver {
 
             connection.disconnect();
         } catch (Exception e) {
-            System.out.println("API Error while retrieving: " + city);
+            System.out.println("City GEO: API Error while retrieving: " + city);
            // e.printStackTrace();
         }
         return null;
