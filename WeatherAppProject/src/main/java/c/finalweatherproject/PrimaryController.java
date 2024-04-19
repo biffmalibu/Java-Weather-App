@@ -1,6 +1,7 @@
 package c.finalweatherproject;
 
-import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,8 +12,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +28,16 @@ import javafx.stage.Stage;
 public class PrimaryController {
     
     CityData city;
+    SaveState save;
+    
+    @FXML
+    private Text feelsLikeLabel;
+    
+    @FXML
+    private Text dewPointLabel;
+    
+    @FXML
+    private Text humidityLabel;
     
     @FXML
     private CheckBox cCheck;
@@ -395,7 +404,43 @@ public class PrimaryController {
 
     @FXML
     void initialize() throws IOException {
+        File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt");
+        if (!file.exists()) {
+            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(save.getGeolocation().toString());
+            writer.write('F');
+            writer.write("\nfalse");
 
+            writer.close();
+        }
+        else {
+
+            
+            FileReader fr = new FileReader(file); 
+            BufferedReader reader = new BufferedReader(fr);
+            
+            String name = reader.readLine();
+            String country = reader.readLine();
+            String state = reader.readLine();
+            Double lat = Double.parseDouble(reader.readLine());
+            Double lon = Double.parseDouble(reader.readLine());
+            String deg = reader.readLine();
+            boolean fullTime = Boolean.parseBoolean(reader.readLine());
+            
+            reader.close();
+            Geolocation geolocation = new Geolocation(name, country, state, lat, lon);
+            save = new SaveState(geolocation, deg, fullTime);
+            
+            if (save.getDegreeUnits().equals("F"))
+                fCheck.setSelected(true);
+            else
+                cCheck.setSelected(true);
+        }
+        Geolocation location = save.getGeolocation();
+        city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
+        updateLabels(save.getGeolocation());
+       
     }
 
 
@@ -405,6 +450,9 @@ public class PrimaryController {
         if (cCheck.isSelected()) {
             cCheck.setSelected(false);
         }
+        save.setDegreeUnits("F");
+        updateFile();
+        updateTempLabels();
     }
     
     @FXML
@@ -412,21 +460,11 @@ public class PrimaryController {
         if (fCheck.isSelected()) {
             fCheck.setSelected(false);
         }
+        save.setDegreeUnits("C");
+        updateFile();
+        updateTempLabels();
     }
-    
-    @FXML
-    void initWindow(ActionEvent event) {
-        String degrees = "°F";
-        double lat = 42.5584; //this should be changed to some start, saved location, if none is set, we could set it to boston
-        double llong= -70.8800;
-        city = WeatherAPIDriver.PopulateCityInfo(lat, llong);
-        city.printCityData();
-        
-        updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
-        temperatureLabel.setText(getFahrenheit(city.getCurTemp()) + degrees);
-        weatherLabel.setText(city.getWeatherMain());
-        lowHighLabel.setText("L: " + getFahrenheit(city.getTempMin()) + "°F    H: " + getFahrenheit(city.getTempMax()) + "°F");
-    }
+   
     
     @FXML
     void openSettings(ActionEvent event) {
@@ -447,25 +485,57 @@ public class PrimaryController {
         try {
             Geolocation location;
             location = WeatherAPIDriver.getGeoLocation(search.getText());
+            
             city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
             city.printCityData();
-
-            cityNameLabel.setText(location.getCityName());
-            updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
-            String main = city.getWeatherMain();
-            weatherLabel.setText(main);
-            if (main.equals("Clouds"))
-                if (!city.getWeatherDesc().equals("overcast clouds")) 
-                    weatherLabel.setText("Partly Cloudy");
-    
+            save.setGeolocation(location);
+            updateFile();
+            updateLabels(location);
             
-            
-            addImages();
-            updateHourlyFieldsF();
-            updateTempFieldsF();
         } catch (NullPointerException e) {
             // do something here
             search.setText("Error parsing input.");
+        }
+    }
+    private void updateFile()  {
+        BufferedWriter writer = null;
+        try {
+            File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt");
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write(save.getGeolocation().toString());
+            writer.write(save.getDegreeUnits());
+            writer.write("\n" + save.getUsing24Hour());
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Error writing to file save.txt");
+        } 
+        
+    }
+    private void updateLabels(Geolocation location) {
+    
+        cityNameLabel.setText(location.getCityName());
+        updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
+        String main = city.getWeatherMain();
+        weatherLabel.setText(main);
+        humidityLabel.setText("Humidity: " + city.getHumidity() + "%");
+        if (main.equals("Clouds"))
+            if (!city.getWeatherDesc().equals("overcast clouds")) 
+                weatherLabel.setText("Partly Cloudy");
+
+
+
+        addImages();
+        updateTempLabels();
+        
+    }
+    private void updateTempLabels() {
+        if(save.getDegreeUnits().equals("F")) {
+            updateHourlyFieldsF();
+            updateTempFieldsF();
+        }
+        else {
+            updateHourlyFieldsC();
+            updateTempFieldsC();
         }
     }
     private int getFahrenheit(double k) {
@@ -483,11 +553,15 @@ public class PrimaryController {
         String fahrenheit = "°F";
         temperatureLabel.setText(getFahrenheit(city.getCurTemp()) + fahrenheit);
         lowHighLabel.setText("L: " + getFahrenheit(city.getTempMin()) + fahrenheit + "    H: " + getFahrenheit(city.getTempMax()) + fahrenheit);
+        dewPointLabel.setText("Dew Point: " + getFahrenheit(city.getDewPoint())+ fahrenheit);
+        feelsLikeLabel.setText("Feels Like: " + getFahrenheit(city.getFeelsLike()) + fahrenheit);
     }
     private void updateTempFieldsC() {
         String celsius = "°C";
         temperatureLabel.setText(getCelsius(city.getCurTemp()) + celsius);
         lowHighLabel.setText("L: " + getCelsius(city.getTempMin()) + celsius + "    H: " + getCelsius(city.getTempMax()) + celsius);
+        dewPointLabel.setText("Dew Point: " + getCelsius(city.getDewPoint()) + celsius);
+        feelsLikeLabel.setText("Feels Like: " + getCelsius(city.getFeelsLike()) + celsius);
     }
     private void updateHourlyFieldsF() {
         try {

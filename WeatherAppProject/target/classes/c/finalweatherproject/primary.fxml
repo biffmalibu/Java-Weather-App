@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -32,7 +33,7 @@
                   <Insets left="3.0" top="3.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#openSettings" prefHeight="25.0" prefWidth="64.0" text="Settings">
+            <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Settings">
                <HBox.margin>
                   <Insets left="254.0" top="2.0" />
                </HBox.margin>
@@ -51,11 +52,44 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Text>
-            <Text fx:id="temperatureLabel" layoutX="10.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="38°F" textAlignment="CENTER" wrappingWidth="1000.0001220703125">
-               <font>
-                  <Font name="Trebuchet MS Bold" size="64.0" />
-               </font>
-            </Text>
+            <HBox prefHeight="74.0" prefWidth="1001.0">
+               <children>
+                  <Text fx:id="temperatureLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="38°F" textAlignment="CENTER" wrappingWidth="187.20010662078857">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="64.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="354.2" />
+                     </HBox.margin>
+                  </Text>
+                  <Line endX="-100.41424560546875" endY="73.69287872314453" startX="-100.0" />
+                  <VBox prefHeight="52.0" prefWidth="102.0">
+                     <children>
+                        <Text fx:id="feelsLikeLabel" layoutX="10.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Feels Like: 55Of">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="9.2" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="humidityLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Humidity: 48%">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="dewPointLabel" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dew Point: 48Of">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
             <Text fx:id="weatherLabel" layoutX="10.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cloudy" textAlignment="CENTER" wrappingWidth="1000.0">
                <font>
                   <Font name="Trebuchet MS" size="21.0" />
@@ -68,11 +102,11 @@
             </Text>
             <HBox prefHeight="70.0" prefWidth="200.0">
                <children>
-                  <ScrollPane minHeight="110.0" prefHeight="110.0" prefWidth="885.0" vbarPolicy="NEVER">
+                  <ScrollPane hbarPolicy="NEVER" minHeight="101.0" prefHeight="101.0" prefWidth="886.0" vbarPolicy="NEVER">
                     <content>
                       <AnchorPane minHeight="100.0" minWidth="0.0" prefHeight="100.0" prefWidth="1924.0">
                            <children>
-                              <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
+                              <VBox prefHeight="100.0" prefWidth="52.0" style="-fx-background-color: lightgray;">
                                  <children>
                                     <Text fx:id="hour1" strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" textAlignment="CENTER" wrappingWidth="51.4765625" />
                                     <ImageView fx:id="img1" fitHeight="46.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
@@ -634,6 +668,11 @@
                      </HBox.margin>
                   </ScrollPane>
                </children>
+            </HBox>
+            <HBox maxWidth="886.0" minWidth="886.0" prefHeight="100.0" prefWidth="886.0">
+               <VBox.margin>
+                  <Insets left="57.0" top="20.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

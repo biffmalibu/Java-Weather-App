@@ -1,0 +1,7 @@
+Beverly
+US
+Massachusetts
+42.5584284
+-70.8800491
+F
+false
