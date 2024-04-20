@@ -224,6 +224,7 @@ public class WeatherAPIDriver {
         try {
             String apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
             URL url = new URL(apiUrl);
+            System.out.println(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 

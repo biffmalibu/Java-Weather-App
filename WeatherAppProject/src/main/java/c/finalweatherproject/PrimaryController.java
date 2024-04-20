@@ -513,11 +513,14 @@ public class PrimaryController {
     }
     private void updateLabels(Geolocation location) {
     
-        cityNameLabel.setText(location.getCityName());
+        if (!location.getState().equals(""))
+            cityNameLabel.setText(location.getCityName() + ", " + location.getState() + ", " + location.getCountry());
+        else 
+            cityNameLabel.setText(location.getCityName() + ", " + location.getCountry());
         updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
+        humidityLabel.setText("Humidity: " + city.getHumidity() + "%");
         String main = city.getWeatherMain();
         weatherLabel.setText(main);
-        humidityLabel.setText("Humidity: " + city.getHumidity() + "%");
         if (main.equals("Clouds"))
             if (!city.getWeatherDesc().equals("overcast clouds")) 
                 weatherLabel.setText("Partly Cloudy");
