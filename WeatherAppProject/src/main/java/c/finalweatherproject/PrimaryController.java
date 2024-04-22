@@ -655,8 +655,13 @@ public class PrimaryController {
             if (cityHourly.get(i).getWeatherMain().equals("Clouds")) {
                 if (cityHourly.get(i).getWeatherDesc().equals("overcast clouds"))
                     imageType = "clouds.png";
-                else 
-                    imageType = "partlycloudy.png";
+                else {
+                    if (isDaytime)
+                        imageType = "partlycloudy.png";
+                    else    
+                        imageType = "partiallynight.png";
+                }
+                    
             } else if (cityHourly.get(i).getWeatherMain().equals("Rain")) {
                 imageType = "rain.png";
             } else if (cityHourly.get(i).getWeatherMain().equals("Thunderstorm")) {
