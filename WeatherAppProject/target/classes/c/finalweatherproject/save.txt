@@ -1,7 +1,7 @@
 Beverly
 US
-
-42.5608
--70.8759
+Massachusetts
+42.5584284
+-70.8800491
 C
 false

@@ -12,6 +12,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -401,6 +403,126 @@ public class PrimaryController {
     
     @FXML
     private ImageView img9;
+    
+    @FXML
+    private Text day1;
+
+    @FXML
+    private Text day2;
+
+    @FXML
+    private Text day3;
+
+    @FXML
+    private Text day4;
+
+    @FXML
+    private Text day5;
+
+    @FXML
+    private Text day6;
+
+    @FXML
+    private Text day7;
+
+    @FXML
+    private Text day8;
+    
+      @FXML
+    private ImageView dimg1;
+
+    @FXML
+    private ImageView dimg2;
+
+    @FXML
+    private ImageView dimg3;
+
+    @FXML
+    private ImageView dimg4;
+
+    @FXML
+    private ImageView dimg5;
+
+    @FXML
+    private ImageView dimg6;
+
+    @FXML
+    private ImageView dimg7;
+
+    @FXML
+    private ImageView dimg8;
+    
+    @FXML
+    private Text high1;
+
+    @FXML
+    private Text high2;
+
+    @FXML
+    private Text high3;
+
+    @FXML
+    private Text high4;
+
+    @FXML
+    private Text high5;
+
+    @FXML
+    private Text high6;
+
+    @FXML
+    private Text high7;
+
+    @FXML
+    private Text high8;
+    
+    @FXML
+    private Text low1;
+
+    @FXML
+    private Text low2;
+
+    @FXML
+    private Text low3;
+
+    @FXML
+    private Text low4;
+
+    @FXML
+    private Text low5;
+
+    @FXML
+    private Text low6;
+
+    @FXML
+    private Text low7;
+
+    @FXML
+    private Text low8;
+    
+    @FXML
+    private Text pop1;
+
+    @FXML
+    private Text pop2;
+
+    @FXML
+    private Text pop3;
+
+    @FXML
+    private Text pop4;
+
+    @FXML
+    private Text pop5;
+
+    @FXML
+    private Text pop6;
+
+    @FXML
+    private Text pop7;
+
+    @FXML
+    private Text pop8;
 
     @FXML
     void initialize() throws IOException {
@@ -526,7 +648,6 @@ public class PrimaryController {
                 weatherLabel.setText("Partly Cloudy");
 
 
-
         addImages();
         updateTempLabels();
         
@@ -535,10 +656,12 @@ public class PrimaryController {
         if(save.getDegreeUnits().equals("F")) {
             updateHourlyFieldsF();
             updateTempFieldsF();
+            updateDailyTempLabelsF();
         }
         else {
             updateHourlyFieldsC();
             updateTempFieldsC();
+            updateDailyTempLabelsC();
         }
     }
     private int getFahrenheit(double k) {
@@ -552,17 +675,47 @@ public class PrimaryController {
         return new Date(epoch * 1000);
     }
     
+    private void updateDailyTempLabelsF() {
+        ArrayList<CityDaily> cityDaily = city.getDailyData();
+        for (int i = 0; i < 8; i++) {
+            try {
+                String highText = "high" + (i + 1);
+                String lowText = "low" + (i + 1);
+                Text high = (Text) getClass().getDeclaredField(highText).get(this);
+                Text low = (Text) getClass().getDeclaredField(lowText).get(this);
+                high.setText(getFahrenheit(cityDaily.get(i).getTempMax()) + "°F");
+                low.setText(getFahrenheit(cityDaily.get(i).getTempMin()) + "°F");
+            } catch(Exception e) {}
+
+        }
+    }
+    private void updateDailyTempLabelsC() {
+        ArrayList<CityDaily> cityDaily = city.getDailyData();
+        high1.setText(city.getTempMax() + "°C");
+        high1.setText(city.getTempMin() + "°C");
+        for (int i = 1; i < 8; i++) {
+            try {
+                String highText = "high" + (i);
+                String lowText = "low" + (i);
+                Text high = (Text) getClass().getDeclaredField(highText).get(this);
+                Text low = (Text) getClass().getDeclaredField(lowText).get(this);
+                high.setText(getCelsius(cityDaily.get(i).getTempMax()) + "°C");
+                low.setText(getCelsius(cityDaily.get(i).getTempMin()) + "°C");
+            } catch(Exception e) {}
+
+        }
+    }
     private void updateTempFieldsF() {
         String fahrenheit = "°F";
         temperatureLabel.setText(getFahrenheit(city.getCurTemp()) + fahrenheit);
-        lowHighLabel.setText("L: " + getFahrenheit(city.getTempMin()) + fahrenheit + "    H: " + getFahrenheit(city.getTempMax()) + fahrenheit);
+        lowHighLabel.setText("H: " + getFahrenheit(city.getTempMax()) + fahrenheit + "    L: " + getFahrenheit(city.getTempMin()) + fahrenheit);
         dewPointLabel.setText("Dew Point: " + getFahrenheit(city.getDewPoint())+ fahrenheit);
         feelsLikeLabel.setText("Feels Like: " + getFahrenheit(city.getFeelsLike()) + fahrenheit);
     }
     private void updateTempFieldsC() {
         String celsius = "°C";
         temperatureLabel.setText(getCelsius(city.getCurTemp()) + celsius);
-        lowHighLabel.setText("L: " + getCelsius(city.getTempMin()) + celsius + "    H: " + getCelsius(city.getTempMax()) + celsius);
+        lowHighLabel.setText("H: " + getCelsius(city.getTempMax()) + celsius + "    L: " + getCelsius(city.getTempMin()) + celsius);
         dewPointLabel.setText("Dew Point: " + getCelsius(city.getDewPoint()) + celsius);
         feelsLikeLabel.setText("Feels Like: " + getCelsius(city.getFeelsLike()) + celsius);
     }
@@ -632,14 +785,14 @@ public class PrimaryController {
     
     private void addImages() {
         ArrayList<CityHourly> cityHourly = city.getHourlyData();
-
+        ArrayList<CityDaily> cityDaily = city.getDailyData();
+        
         for (int i = 0; i < 37; i++) {
             String imageType = "";
             int curTime = cityHourly.get(i).getDt();
             int sunrise = city.getSunrise();
             int sunset = city.getSunset();
             if (curTime > sunset) {
-                ArrayList<CityDaily> cityDaily = city.getDailyData();
                 sunset = cityDaily.get(1).getSunset();
                 sunrise = cityDaily.get(1).getSunrise();
             }
@@ -682,6 +835,55 @@ public class PrimaryController {
                 File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
 
                 // Check if file exists before attempting to load the image
+                if (file.exists()) {
+                    Image image = new Image(file.toURI().toString());
+                    imageView.setImage(image);
+                } else {
+                    System.out.println("File not found: " + file.getAbsolutePath());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        for (int i = 0; i < 8; i++) {
+            String imageType = "";
+            String weatherMain = cityDaily.get(i).getWeatherMain();
+            try {
+                String popText = "pop" + (i + 1);
+                Text pop = (Text) getClass().getDeclaredField(popText).get(this);
+                Double popNum = 100 * cityDaily.get(i).getPop();
+                if(popNum == 0 || !weatherMain.equals("Rain"))
+                    pop.setText("");
+                else
+                    pop.setText(String.format("%.0f", popNum) + "%");
+            } catch (Exception e) {}
+            if (weatherMain.equals("Clear")) {
+                imageType = "clouds.png";
+            }
+            else if (weatherMain.equals("Rain")) {
+                imageType = "rain.png";
+            }
+            else if (weatherMain.equals("Clouds")) {
+                imageType = "clouds.png";
+            }
+            else if (weatherMain.equals("Snow")) {
+                imageType = "snow.png";
+            }
+            else if (weatherMain.equals("Thunderstorm")) {
+                imageType = "lightning.png";
+            }
+            else if (weatherMain.equals("Drizzle")) {
+                imageType = "drizzle.png";
+            }
+            
+            String imgFieldName = "dimg" + (i + 1);
+
+            try {
+                ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
+
+                File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
+
                 if (file.exists()) {
                     Image image = new Image(file.toURI().toString());
                     imageView.setImage(image);
