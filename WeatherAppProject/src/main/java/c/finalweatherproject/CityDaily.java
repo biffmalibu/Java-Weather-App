@@ -1,9 +1,13 @@
 package c.finalweatherproject;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -42,13 +46,15 @@ public class CityDaily {
     private String weatherDesc;
     private int clouds;
     private double uvi;
+    private double pop;
+    private String day;
 
     // Constructor
     public CityDaily(int dt, int sunrise, int sunset, int moonrise, int moonset, double moonphase, String summary,
                      double temp, double tempMin, double tempMax, double tempNight, double tempEve,
                      double tempMorn, double feelsLikeDay, double feelsLikeNight, double feelsLikeEve,
                      double feelsLikeMorn, int pressure, int humidity, double dewPoint, double windSpeed,
-                     int windDeg, double windGust, String weatherMain, String weatherDesc, int clouds, double uvi) {
+                     int windDeg, double windGust, String weatherMain, String weatherDesc, int clouds, double uvi, double pop) {
         this.dt = dt;
         this.sunrise = sunrise;
         this.sunset = sunset;
@@ -76,12 +82,16 @@ public class CityDaily {
         this.weatherDesc = weatherDesc;
         this.clouds = clouds;
         this.uvi = uvi;
+        this.pop = pop;
+        this.day = getCurrentDayOfWeek(dt);
     }
     
     @Override
     public String toString() {
         return "CityDaily{" +
-                "dt=" + resolveHourFromEpoch(dt) +
+                "dtraw=" + dt +
+                ", dt=" + resolveHourFromEpoch(dt) +
+                ", day=" + getCurrentDayOfWeek(dt) +
                 ", sunrise=" + resolveHourFromEpoch(sunrise) + " " + sunrise +
                 ", sunset=" + resolveHourFromEpoch(sunset) + " " + sunset +
                 ", moonrise=" + resolveHourFromEpoch(moonrise) +
@@ -108,6 +118,7 @@ public class CityDaily {
                 ", weatherDesc='" + weatherDesc + '\'' +
                 ", clouds=" + clouds +
                 ", uvi=" + uvi +
+                ", pop=" + pop + 
                 '}';
     }
     private String resolveHourFromEpoch(int epoch) {
@@ -126,8 +137,19 @@ public class CityDaily {
     private int getFahrenheit(double k) {
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
+    
+    public String getCurrentDayOfWeek(int dt) {
+        LocalDate date = LocalDate.ofEpochDay(dt / (24 * 60 * 60));
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        String day = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault());
+        return day;
+    }
     // Getters
+    public String getDay() { return day; }
+    
     public int getSunrise() { return sunrise; }
+    
+    public double getPop() { return pop;}
 
     public int getSunset() { return sunset; }
 

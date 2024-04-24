@@ -54,7 +54,8 @@ public class WeatherAPIDriver {
                         hourlyForecast.get("wind_gust").getAsDouble(),
                         weatherId,
                         weatherMain,
-                        weatherDescription
+                        weatherDescription,
+                        hourlyForecast.get("pop").getAsDouble()
                 );
                 cityHourlyArrayList.add(cityHourly);
             }
@@ -109,7 +110,8 @@ public class WeatherAPIDriver {
                         weatherMain,
                         weatherDescription,
                         dailyForecast.get("clouds").getAsInt(),
-                        dailyForecast.get("uvi").getAsDouble()
+                        dailyForecast.get("uvi").getAsDouble(),
+                        dailyForecast.get("pop").getAsDouble()
                         
                 );
                 cityDailyArrayList.add(cityDaily);

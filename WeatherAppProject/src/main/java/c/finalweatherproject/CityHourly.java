@@ -31,11 +31,12 @@ public class CityHourly {
     private int weatherId;
     private String weatherMain;
     private String weatherDesc;
+    private double pop;
 
     // Constructor
     public CityHourly(int dt, double curTemp, double feelsLike, int pressure, int humidity, double dewPoint, double uvi,
                       int clouds, int visibility, double windSpeed, int windDegrees, double windGust,
-                      int weatherId, String weatherMain, String weatherDesc) {
+                      int weatherId, String weatherMain, String weatherDesc, double pop) {
         this.dt = dt;
         this.curTemp = curTemp;
         this.feelsLike = feelsLike;
@@ -51,6 +52,7 @@ public class CityHourly {
         this.weatherId = weatherId;
         this.weatherMain = weatherMain;
         this.weatherDesc = weatherDesc;
+        this.pop = pop;
     }
     @Override
     public String toString() {
@@ -70,6 +72,7 @@ public class CityHourly {
                 ", weatherId=" + weatherId +
                 ", weatherMain='" + weatherMain + '\'' +
                 ", weatherDesc='" + weatherDesc + '\'' +
+                ", pop=" + pop +
                 '}';
     }
     private int getFahrenheit(double k) {
@@ -87,6 +90,9 @@ public class CityHourly {
         return hour;
     }
     // Getters
+    
+    public double getPop() {return pop;}
+    
     public int getDt() { return dt; }
 
     public double getCurTemp() { return curTemp; }
