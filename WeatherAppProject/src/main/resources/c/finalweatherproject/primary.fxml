@@ -63,7 +63,7 @@
                         <Insets left="354.2" />
                      </HBox.margin>
                   </Text>
-                  <Line endX="-100.41424560546875" endY="73.69287872314453" startX="-100.0" />
+                  <Line endX="-100.41424560546875" endY="73.69287872314453" startX="-100.0" stroke="WHITE" />
                   <VBox prefHeight="52.0" prefWidth="102.0">
                      <children>
                         <Text fx:id="feelsLikeLabel" fill="#cfcfcf" layoutX="10.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Feels Like: 55Of">
