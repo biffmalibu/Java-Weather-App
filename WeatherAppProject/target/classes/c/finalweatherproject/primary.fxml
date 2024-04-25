@@ -1152,7 +1152,7 @@
                                     </Text>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets top="3.0" />
                                  </VBox.margin>
                               </HBox>
                               <Text fx:id="pressureLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="1032 mbar" textAlignment="CENTER" wrappingWidth="100.0">
@@ -1162,11 +1162,43 @@
                               </Text>
                            </children>
                         </VBox>
-                        <HBox maxHeight="75.0" maxWidth="100.0" minWidth="100.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                        <VBox layoutX="20.0" layoutY="10.0" maxWidth="100.0" minWidth="100.0" prefHeight="75.0" prefWidth="100.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                           <children>
+                              <HBox prefHeight="23.0" prefWidth="100.0">
+                                 <children>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets left="7.0" top="1.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@images/uv.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="UV Index">
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="2.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Text fx:id="uvLabelNum" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="3.23" textAlignment="CENTER" wrappingWidth="100.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="uvLabelDesc" fill="#cfcfcf" layoutX="10.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moderate" textAlignment="CENTER" wrappingWidth="100.0">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Text>
+                           </children>
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
-                        </HBox>
+                        </VBox>
                         <HBox layoutX="20.0" layoutY="10.0" maxHeight="75.0" maxWidth="100.0" minWidth="100.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <VBox.margin>
                               <Insets left="10.0" top="10.0" />

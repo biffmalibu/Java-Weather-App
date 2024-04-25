@@ -10,8 +10,8 @@ package c.finalweatherproject;
  */
 public class SaveState {
     private static Geolocation homeTown;
-    private static String degreeUnits = "F";
-    private static boolean using24Hour = false;
+    private static String degreeUnits;
+    private static boolean using24Hour;
     
     public SaveState(Geolocation homeTown, String degreeUnits, boolean using24Hour) {
         this.homeTown = homeTown;

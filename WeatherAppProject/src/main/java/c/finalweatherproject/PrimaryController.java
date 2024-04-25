@@ -550,6 +550,12 @@ public class PrimaryController {
     
     @FXML
     private Text pressureLabel;
+    
+    @FXML
+    private Text uvLabelNum;
+    
+    @FXML
+    private Text uvLabelDesc;
 
     @FXML
     void initialize() throws IOException {
@@ -685,14 +691,23 @@ public class PrimaryController {
         moonriseLabel.setText("Moonrise: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonrise()));
         
         pressureLabel.setText(city.getPressure() + " mbar");
+        uvLabelNum.setText(String.valueOf(city.getUvi()));
+        uvLabelDesc.setText(getUVDesc(city.getUvi()));
+        
+        double x = 0;
+        while (x<=11){
+            System.out.println("x: " + x + " " + getUVDesc(x));
+            x+=.1;
+        }
         
     }
     private void updateWindInfo() {
-        double wind = city.getWindDegrees();
-        windspeedLabel.setText("Wind " + city.getWindSpeed() + " MPH");
+        double deg = city.getWindDegrees();
+        double speed = city.getWindSpeed();
+        windspeedLabel.setText("Wind " + speed + " MPH");
         gustLabel.setText("Gust: " + city.getWindGust() + " MPH");
-        winddirectionLabel.setText(wind + "°");
-        winddirectionIMG.setRotate(wind);
+        winddirectionLabel.setText(getWindDirection(deg) + ", " + deg + "°");
+        winddirectionIMG.setRotate(deg);
     }
     private void updateTempLabels() {
         if(save.getDegreeUnits().equals("F")) {
@@ -706,6 +721,21 @@ public class PrimaryController {
             updateDailyTempLabelsC();
         }
     }
+    
+    private String getUVDesc(double uvi) {
+        if (uvi >= 0 && uvi < 3) {
+            return "Low";
+        } else if (uvi <= 6) {
+            return "Moderate";
+        } else if (uvi <= 8) {
+            return "High";
+        } else if (uvi <= 10) {
+            return "Very High";
+        } else {
+            return "Extreme";
+        }
+    }
+
     private int getFahrenheit(double k) {
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
@@ -792,6 +822,42 @@ public class PrimaryController {
             hour.setText(resolveHourFromEpoch(cityHourly.get(i).getDt()));
         }
         } catch(Exception e) {}
+    }
+    
+    private String getWindDirection(double deg) {
+        int direction = (int) ((deg + 11.25) % 360) / 45;
+        String windDirection;
+        switch (direction) {
+            case 0:
+            case 8:
+                windDirection = "N";
+                break;
+            case 1:
+                windDirection = "NE";
+                break;
+            case 2:
+                windDirection = "E";
+                break;
+            case 3:
+                windDirection = "SE";
+                break;
+            case 4:
+                windDirection = "S";
+                break;
+            case 5:
+                windDirection = "SW";
+                break;
+            case 6:
+                windDirection = "W";
+                break;
+            case 7:
+                windDirection = "NW";
+                break;
+            default:
+                windDirection = "";
+                break;
+        }
+        return windDirection;
     }
     
     private String resolveTimeAMPM(int epoch) {
