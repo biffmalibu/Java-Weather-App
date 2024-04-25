@@ -523,6 +523,33 @@ public class PrimaryController {
 
     @FXML
     private Text pop8;
+    
+    @FXML
+    private Text sunsetLabel;
+    
+    @FXML
+    private Text sunriseLabel;
+    
+    @FXML
+    private Text moonriseLabel;
+    
+    @FXML
+    private Text moonsetLabel;
+    
+    @FXML
+    private ImageView winddirectionIMG;
+    
+    @FXML
+    private Text windspeedLabel;
+    
+    @FXML
+    private Text gustLabel;
+    
+    @FXML
+    private Text winddirectionLabel;
+    
+    @FXML
+    private Text pressureLabel;
 
     @FXML
     void initialize() throws IOException {
@@ -647,10 +674,25 @@ public class PrimaryController {
             if (!city.getWeatherDesc().equals("overcast clouds")) 
                 weatherLabel.setText("Partly Cloudy");
 
-
+        
         addImages();
         updateTempLabels();
+        updateWindInfo();
         
+        sunsetLabel.setText("Sunset: " + resolveTimeAMPM(city.getDailyData().get(0).getSunset()));
+        sunriseLabel.setText("Sunrise: " + resolveTimeAMPM(city.getDailyData().get(0).getSunrise()));
+        moonsetLabel.setText("Moonset: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonset()));
+        moonriseLabel.setText("Moonrise: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonrise()));
+        
+        pressureLabel.setText(city.getPressure() + " mbar");
+        
+    }
+    private void updateWindInfo() {
+        double wind = city.getWindDegrees();
+        windspeedLabel.setText("Wind " + city.getWindSpeed() + " MPH");
+        gustLabel.setText("Gust: " + city.getWindGust() + " MPH");
+        winddirectionLabel.setText(wind + "°");
+        winddirectionIMG.setRotate(wind);
     }
     private void updateTempLabels() {
         if(save.getDegreeUnits().equals("F")) {
@@ -752,147 +794,141 @@ public class PrimaryController {
         } catch(Exception e) {}
     }
     
-    private String resolveHour24FromEpoch(int epoch) {
+    private String resolveTimeAMPM(int epoch) {
         // Convert epoch time to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
-        
+
         // Format the hour part only
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:00");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
         String hour = dateTime.format(formatter);
-        
+
         return hour;
     }
     private String resolveHourFromEpoch(int epoch) {
         // Convert epoch time to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
-        
+
         // Format the hour part only
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:00");
         String hour = dateTime.format(formatter);
-        
-        return hour;
-    }
-    private String resolveTimeFromEpoch(int epoch) {
-        // Convert epoch time to LocalDateTime
-        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
-        
-        // Format the hour part only
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
-        String hour = dateTime.format(formatter);
-        
+
         return hour;
     }
     
     private void addImages() {
         ArrayList<CityHourly> cityHourly = city.getHourlyData();
         ArrayList<CityDaily> cityDaily = city.getDailyData();
-        
-        for (int i = 0; i < 37; i++) {
-            String imageType = "";
-            int curTime = cityHourly.get(i).getDt();
-            int sunrise = city.getSunrise();
-            int sunset = city.getSunset();
-            if (curTime > sunset) {
-                sunset = cityDaily.get(1).getSunset();
-                sunrise = cityDaily.get(1).getSunrise();
-            }
-            boolean isDaytime = curTime > sunrise && curTime < sunset;
-            System.out.println(resolveHourFromEpoch(curTime) + " " +  curTime + "daytime: " + isDaytime);
-            if (cityHourly.get(i).getWeatherMain().equals("Clear")) {
-                if (isDaytime) {
-                    imageType = "sun.png";
-                } else {
-                    imageType = "moon.png";
+        Thread hourlyImagesThread = new Thread(() -> {
+            for (int i = 0; i < 37; i++) {
+                String imageType = "";
+                int curTime = cityHourly.get(i).getDt();
+                int sunrise = city.getSunrise();
+                int sunset = city.getSunset();
+                if (curTime > sunset) {
+                    sunset = cityDaily.get(1).getSunset();
+                    sunrise = cityDaily.get(1).getSunrise();
+                }
+                boolean isDaytime = curTime > sunrise && curTime < sunset;
+                System.out.println(resolveHourFromEpoch(curTime) + " " +  curTime + "daytime: " + isDaytime);
+                if (cityHourly.get(i).getWeatherMain().equals("Clear")) {
+                    if (isDaytime) {
+                        imageType = "sun.png";
+                    } else {
+                        imageType = "moon.png";
+                    }
+                }
+                if (cityHourly.get(i).getWeatherMain().equals("Clouds")) {
+                    if (cityHourly.get(i).getWeatherDesc().equals("overcast clouds"))
+                        imageType = "clouds.png";
+                    else {
+                        if (isDaytime)
+                            imageType = "partlycloudy.png";
+                        else    
+                            imageType = "partiallynight.png";
+                    }
+
+                } else if (cityHourly.get(i).getWeatherMain().equals("Rain")) {
+                    imageType = "rain.png";
+                } else if (cityHourly.get(i).getWeatherMain().equals("Thunderstorm")) {
+                    imageType = "lightning.png";
+                } else if (cityHourly.get(i).getWeatherMain().equals("Drizzle")) {
+                    imageType = "drizzle.png";
+                } else if (cityHourly.get(i).getWeatherMain().equals("Snow")) {
+                    imageType = "snow.png";
+                }
+                // Construct the field name dynamically
+                String imgFieldName = "img" + (i + 1);
+
+                try {
+                    // Access the ImageView using reflection
+                    ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
+
+                    // Construct the file path
+                    File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
+
+                    // Check if file exists before attempting to load the image
+                    if (file.exists()) {
+                        Image image = new Image(file.toURI().toString());
+                        imageView.setImage(image);
+                    } else {
+                        System.out.println("File not found: " + file.getAbsolutePath());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            if (cityHourly.get(i).getWeatherMain().equals("Clouds")) {
-                if (cityHourly.get(i).getWeatherDesc().equals("overcast clouds"))
+        });
+        hourlyImagesThread.start();
+        Thread dailyImagesThread = new Thread(() -> {
+            for (int i = 0; i < 8; i++) {
+                String imageType = "";
+                String weatherMain = cityDaily.get(i).getWeatherMain();
+                try {
+                    String popText = "pop" + (i + 1);
+                    Text pop = (Text) getClass().getDeclaredField(popText).get(this);
+                    Double popNum = 100 * cityDaily.get(i).getPop();
+                    if(popNum == 0 || !weatherMain.equals("Rain"))
+                        pop.setText("");
+                    else
+                        pop.setText(String.format("%.0f", popNum) + "%");
+                } catch (Exception e) {}
+                if (weatherMain.equals("Clear")) {
                     imageType = "clouds.png";
-                else {
-                    if (isDaytime)
-                        imageType = "partlycloudy.png";
-                    else    
-                        imageType = "partiallynight.png";
                 }
-                    
-            } else if (cityHourly.get(i).getWeatherMain().equals("Rain")) {
-                imageType = "rain.png";
-            } else if (cityHourly.get(i).getWeatherMain().equals("Thunderstorm")) {
-                imageType = "lightning.png";
-            } else if (cityHourly.get(i).getWeatherMain().equals("Drizzle")) {
-                imageType = "drizzle.png";
-            } else if (cityHourly.get(i).getWeatherMain().equals("Snow")) {
-                imageType = "snow.png";
-            }
-            // Construct the field name dynamically
-            String imgFieldName = "img" + (i + 1);
-
-            try {
-                // Access the ImageView using reflection
-                ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
-
-                // Construct the file path
-                File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
-
-                // Check if file exists before attempting to load the image
-                if (file.exists()) {
-                    Image image = new Image(file.toURI().toString());
-                    imageView.setImage(image);
-                } else {
-                    System.out.println("File not found: " + file.getAbsolutePath());
+                else if (weatherMain.equals("Rain")) {
+                    imageType = "rain.png";
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        
-        for (int i = 0; i < 8; i++) {
-            String imageType = "";
-            String weatherMain = cityDaily.get(i).getWeatherMain();
-            try {
-                String popText = "pop" + (i + 1);
-                Text pop = (Text) getClass().getDeclaredField(popText).get(this);
-                Double popNum = 100 * cityDaily.get(i).getPop();
-                if(popNum == 0 || !weatherMain.equals("Rain"))
-                    pop.setText("");
-                else
-                    pop.setText(String.format("%.0f", popNum) + "%");
-            } catch (Exception e) {}
-            if (weatherMain.equals("Clear")) {
-                imageType = "clouds.png";
-            }
-            else if (weatherMain.equals("Rain")) {
-                imageType = "rain.png";
-            }
-            else if (weatherMain.equals("Clouds")) {
-                imageType = "clouds.png";
-            }
-            else if (weatherMain.equals("Snow")) {
-                imageType = "snow.png";
-            }
-            else if (weatherMain.equals("Thunderstorm")) {
-                imageType = "lightning.png";
-            }
-            else if (weatherMain.equals("Drizzle")) {
-                imageType = "drizzle.png";
-            }
-            
-            String imgFieldName = "dimg" + (i + 1);
-
-            try {
-                ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
-
-                File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
-
-                if (file.exists()) {
-                    Image image = new Image(file.toURI().toString());
-                    imageView.setImage(image);
-                } else {
-                    System.out.println("File not found: " + file.getAbsolutePath());
+                else if (weatherMain.equals("Clouds")) {
+                    imageType = "clouds.png";
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                else if (weatherMain.equals("Snow")) {
+                    imageType = "snow.png";
+                }
+                else if (weatherMain.equals("Thunderstorm")) {
+                    imageType = "lightning.png";
+                }
+                else if (weatherMain.equals("Drizzle")) {
+                    imageType = "drizzle.png";
+                }
+
+                String imgFieldName = "dimg" + (i + 1);
+
+                try {
+                    ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
+
+                    File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
+
+                    if (file.exists()) {
+                        Image image = new Image(file.toURI().toString());
+                        imageView.setImage(image);
+                    } else {
+                        System.out.println("File not found: " + file.getAbsolutePath());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
+        dailyImagesThread.start();
     }
 }
