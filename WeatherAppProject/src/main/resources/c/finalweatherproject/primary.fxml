@@ -103,7 +103,7 @@
             </Text>
             <HBox prefHeight="70.0" prefWidth="200.0">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" minHeight="101.0" prefHeight="101.0" prefWidth="886.0" style="-fx-background-color: rgb(22, 27, 46);" vbarPolicy="NEVER">
+                  <ScrollPane hbarPolicy="NEVER" minHeight="101.0" prefHeight="101.0" prefWidth="886.0" style="-fx-background-color: rgb(34, 41, 69);" vbarPolicy="NEVER">
                     <content>
                       <AnchorPane minHeight="100.0" minWidth="0.0" prefHeight="100.0" prefWidth="1924.0" style="-fx-background-color: rgb(34, 41, 69);">
                            <children>
@@ -1030,13 +1030,13 @@
                                           <Insets top="5.0" />
                                        </VBox.margin>
                                     </Text>
-                                    <Text fx:id="winddirectionLabel" fill="#cfcfcf" layoutX="10.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NE, 32O" textAlignment="CENTER" wrappingWidth="101.64990234375">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
+                                    <Text fx:id="winddirectionLabel" fill="#cfcfcf" layoutX="10.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Northwest, 32Of" textAlignment="CENTER" wrappingWidth="101.64990234375">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
                                     </Text>
                                  </children>
                                  <HBox.margin>
@@ -1159,6 +1159,9 @@
                                  <font>
                                     <Font size="18.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
                               </Text>
                            </children>
                         </VBox>
@@ -1193,34 +1196,67 @@
                                  <font>
                                     <Font size="11.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
                               </Text>
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
                         </VBox>
-                        <HBox layoutX="20.0" layoutY="10.0" maxHeight="75.0" maxWidth="100.0" minWidth="100.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                        <VBox maxWidth="100.0" minWidth="100.0" prefHeight="75.0" prefWidth="100.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                           <children>
+                              <HBox prefHeight="23.0" prefWidth="100.0">
+                                 <children>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets left="7.0" top="1.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@images/visibility.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Visibility">
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="2.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Text fx:id="visibilityLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="10+ Miles" textAlignment="CENTER" wrappingWidth="100.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="visibilityDescLabel" fill="#cfcfcf" layoutX="10.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perfectly Clear" textAlignment="CENTER" wrappingWidth="100.0">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
                            <VBox.margin>
                               <Insets left="10.0" top="10.0" />
                            </VBox.margin>
-                        </HBox>
+                        </VBox>
                      </children>
                   </VBox>
-                  <VBox layoutX="512.0" layoutY="10.0" maxWidth="187.0" minWidth="187.0" prefHeight="246.0" prefWidth="220.0">
+                  <VBox layoutX="512.0" layoutY="10.0" maxWidth="269.0" minWidth="187.0" prefHeight="246.0" prefWidth="269.0">
                      <children>
-                        <HBox layoutX="20.0" layoutY="96.0" maxHeight="75.0" maxWidth="187.0" minWidth="183.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                        <HBox layoutX="20.0" layoutY="96.0" maxHeight="75.0" maxWidth="187.0" minWidth="260.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox maxHeight="75.0" maxWidth="187.0" minWidth="183.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                        <HBox maxHeight="150.0" maxWidth="187.0" minHeight="160.0" minWidth="260.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <VBox.margin>
                               <Insets left="10.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox layoutX="20.0" layoutY="10.0" maxHeight="75.0" maxWidth="187.0" minWidth="183.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
-                           <VBox.margin>
-                              <Insets left="10.0" top="10.0" />
                            </VBox.margin>
                         </HBox>
                      </children>

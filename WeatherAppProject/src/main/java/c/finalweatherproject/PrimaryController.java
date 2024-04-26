@@ -556,6 +556,12 @@ public class PrimaryController {
     
     @FXML
     private Text uvLabelDesc;
+    
+    @FXML
+    private Text visibilityDescLabel;
+    
+    @FXML
+    private Text visibilityLabel;
 
     @FXML
     void initialize() throws IOException {
@@ -694,19 +700,20 @@ public class PrimaryController {
         uvLabelNum.setText(String.valueOf(city.getUvi()));
         uvLabelDesc.setText(getUVDesc(city.getUvi()));
         
-        double x = 0;
-        while (x<=11){
-            System.out.println("x: " + x + " " + getUVDesc(x));
-            x+=.1;
-        }
+        int vis = city.getVisibility();
+        visibilityDescLabel.setText(getVisibilityDesc(vis));
+        if (vis != 10000)
+            visibilityLabel.setText(vis/1000 + "Miles");
+        else
+            visibilityLabel.setText("10+ Miles");
         
     }
     private void updateWindInfo() {
-        double deg = city.getWindDegrees();
+        double deg = (city.getWindDegrees() + 180) % 360;
         double speed = city.getWindSpeed();
         windspeedLabel.setText("Wind " + speed + " MPH");
         gustLabel.setText("Gust: " + city.getWindGust() + " MPH");
-        winddirectionLabel.setText(getWindDirection(deg) + ", " + deg + "°");
+        winddirectionLabel.setText(getWindDirection(deg) + ", " + String.format("%.0f", deg) + "°");
         winddirectionIMG.setRotate(deg);
     }
     private void updateTempLabels() {
@@ -721,7 +728,18 @@ public class PrimaryController {
             updateDailyTempLabelsC();
         }
     }
-    
+    private String getVisibilityDesc(int visibility) {
+        visibility = visibility /1000;
+        if (visibility >= 0 && visibility <= 3)
+            return "Limited Visibility";
+        else if (visibility < 6) 
+            return "Fair Visibility";
+        if (visibility < 10) 
+            return "Clear View";
+        else
+            return "Perfectly Clear";
+            
+    }
     private String getUVDesc(double uvi) {
         if (uvi >= 0 && uvi < 3) {
             return "Low";
@@ -830,28 +848,28 @@ public class PrimaryController {
         switch (direction) {
             case 0:
             case 8:
-                windDirection = "N";
+                windDirection = "North";
                 break;
             case 1:
-                windDirection = "NE";
+                windDirection = "Northeast";
                 break;
             case 2:
-                windDirection = "E";
+                windDirection = "East";
                 break;
             case 3:
-                windDirection = "SE";
+                windDirection = "Southeast";
                 break;
             case 4:
-                windDirection = "S";
+                windDirection = "South";
                 break;
             case 5:
-                windDirection = "SW";
+                windDirection = "Southwest";
                 break;
             case 6:
-                windDirection = "W";
+                windDirection = "West";
                 break;
             case 7:
-                windDirection = "NW";
+                windDirection = "Northwest";
                 break;
             default:
                 windDirection = "";
@@ -895,7 +913,6 @@ public class PrimaryController {
                     sunrise = cityDaily.get(1).getSunrise();
                 }
                 boolean isDaytime = curTime > sunrise && curTime < sunset;
-                System.out.println(resolveHourFromEpoch(curTime) + " " +  curTime + "daytime: " + isDaytime);
                 if (cityHourly.get(i).getWeatherMain().equals("Clear")) {
                     if (isDaytime) {
                         imageType = "sun.png";
