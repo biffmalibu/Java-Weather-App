@@ -283,7 +283,7 @@ public class WeatherAPIDriver {
             }
         } else {
             // City
-            return getGeoLocationFromCity(input);
+            return getGeoLocationFromCity(input.replaceAll("\\s", "%20"));
         }
     }
 }
