@@ -585,8 +585,8 @@ public class PrimaryController {
             for (int i = 0; i < 3; i++) {
                 writer.write(savedCities.get(i).toString());
             }
-//            fCheck.setSelected(true);
-//            miCheck.setSelected(true);
+            fCheck.setSelected(true);
+            miCheck.setSelected(true);
 
             writer.close();
         }

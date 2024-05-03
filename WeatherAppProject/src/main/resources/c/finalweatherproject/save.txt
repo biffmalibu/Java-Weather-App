@@ -1,8 +1,8 @@
-Beverly
+Boston
 US
 Massachusetts
-42.5584284
--70.8800491
+42.3554334
+-71.060511
 F
 false
 MI
