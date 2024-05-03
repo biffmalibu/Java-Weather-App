@@ -148,7 +148,7 @@ public class WeatherAPIDriver {
             return null;
         }
     }
-
+    
     private static JsonObject getWeatherApiResponse(double latitude, double longitude) {
         try {
             String apiUrl = "https://api.openweathermap.org/data/3.0/onecall" +

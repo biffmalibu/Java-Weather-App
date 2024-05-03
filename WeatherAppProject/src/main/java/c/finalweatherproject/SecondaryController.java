@@ -1,9 +1,16 @@
 package c.finalweatherproject;
 
+import static c.finalweatherproject.PrimaryController.save;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.stage.Stage;
 
 
 public class SecondaryController {
@@ -14,34 +21,48 @@ public class SecondaryController {
     private Button applyButton;
 
     @FXML
-    private CheckBox celsiusCheck;
+    private CheckBox cCheck;
 
     @FXML
-    private Button closeButton;
+    private Button cancelButton;
 
     @FXML
-    private CheckBox fahrenheitCheck;
-    
+    private CheckBox fCheck;
+
     @FXML
-    private void applyPressed() {}
-    
+    private CheckBox kmCheck;
+
     @FXML
-    private void OKPressed() {}
-    
+    private CheckBox miCheck;
+
     @FXML
-    private void closePressed() {}
-    
-    @FXML 
-    void fahrenheitClicked() {
-        if (celsiusCheck.isSelected()) {
-            celsiusCheck.setSelected(false);
+    void initialize() {
+        if (save.getDegreeUnits().equals("F")) {
+            fCheck.setSelected(true);
+        } else {
+            cCheck.setSelected(true);
+        }
+
+        if (save.getDistance().equals("MI")) {
+            miCheck.setSelected(true);
+        } else {
+            kmCheck.setSelected(true);
         }
     }
-    
-    @FXML 
-    void celsiusClicked() {
-        if (fahrenheitCheck.isSelected()) {
-            fahrenheitCheck.setSelected(false);
+
+    @FXML
+    void fClicked(ActionEvent event) {
+        if (cCheck.isSelected()) {
+            cCheck.setSelected(false);
+        }
+        save.setDegreeUnits("F");
+        SaveState.updateFile();
+    }
+
+    @FXML
+    void cClicked() {
+        if (fCheck.isSelected()) {
+            fCheck.setSelected(false);
         }
     }
 }
