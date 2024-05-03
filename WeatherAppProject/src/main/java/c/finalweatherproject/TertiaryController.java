@@ -232,14 +232,14 @@ public class TertiaryController {
                 String unit;
                 if (save.getDegreeUnits().equals("F")) {
                     unit = "°F";
-                    highLow.setText(getFahrenheit(cities.getTempMax()) + unit + "     " + getFahrenheit(cities.getTempMin()) + unit);
+                    highLow.setText("H: " + getFahrenheit(cities.getTempMax()) + unit + "     L: " + getFahrenheit(cities.getTempMin()) + unit);
                     temperature.setText(getFahrenheit(cities.getCurTemp()) + unit);
                     feelsLike.setText("Feels like: " + getFahrenheit(cities.getFeelsLike()) + unit);
                     dewpoint.setText("Dew point: " + getFahrenheit(cities.getDewPoint()) + unit);
                 }
                 else {
                     unit = "°C";
-                    highLow.setText(getCelsius(cities.getTempMax()) + unit + "     " + getCelsius(cities.getTempMin()) + unit);
+                    highLow.setText("H: " + getCelsius(cities.getTempMax()) + unit + "     L: " + getCelsius(cities.getTempMin()) + unit);
                     temperature.setText(getCelsius(cities.getCurTemp()) + unit);
                     feelsLike.setText("Feels like: " + getCelsius(cities.getFeelsLike()) + unit);
                     dewpoint.setText("Dew point: " + getCelsius(cities.getDewPoint()) + unit);
