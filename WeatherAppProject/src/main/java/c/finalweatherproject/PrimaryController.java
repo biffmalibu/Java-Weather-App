@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -29,8 +30,14 @@ import javafx.stage.Stage;
 
 public class PrimaryController {
     
-    CityData city;
-    SaveState save;
+    private static CityData city;
+    public static SaveState save;
+    
+    @FXML
+    private CheckBox kmCheck;
+
+    @FXML
+    private CheckBox miCheck;
     
     @FXML
     private Text feelsLikeLabel;
@@ -42,13 +49,13 @@ public class PrimaryController {
     private Text humidityLabel;
     
     @FXML
-    private CheckBox cCheck;
-
-    @FXML
+    private Text hour1;
+    
+    @FXML 
     private CheckBox fCheck;
     
-    @FXML
-    private Text hour1;
+    @FXML 
+    private CheckBox cCheck;
 
     @FXML
     private Text hour10;
@@ -279,7 +286,7 @@ public class PrimaryController {
     private TextField search;
     
     @FXML
-    private Button settingsButton;
+    private Button savedCities;
     
     @FXML
     private Text temperatureLabel;
@@ -562,87 +569,147 @@ public class PrimaryController {
     
     @FXML
     private Text visibilityLabel;
+    
 
     @FXML
     void initialize() throws IOException {
         File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt");
+        ArrayList<Geolocation> savedCities = getDefaultSavedCities();
         if (!file.exists()) {
-            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false, "MI", savedCities); // Fill save with default values
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
             writer.write(save.getGeolocation().toString());
             writer.write('F');
             writer.write("\nfalse");
+            writer.write("\nMI\n");
+            for (int i = 0; i < 3; i++) {
+                writer.write(savedCities.get(i).toString());
+            }
+//            fCheck.setSelected(true);
+//            miCheck.setSelected(true);
 
             writer.close();
         }
         else {
+            try {
+                FileReader fr = new FileReader(file); 
+                BufferedReader reader = new BufferedReader(fr);
 
-            
-            FileReader fr = new FileReader(file); 
-            BufferedReader reader = new BufferedReader(fr);
-            
-            String name = reader.readLine();
-            String country = reader.readLine();
-            String state = reader.readLine();
-            Double lat = Double.parseDouble(reader.readLine());
-            Double lon = Double.parseDouble(reader.readLine());
-            String deg = reader.readLine();
-            boolean fullTime = Boolean.parseBoolean(reader.readLine());
-            
-            reader.close();
-            Geolocation geolocation = new Geolocation(name, country, state, lat, lon);
-            save = new SaveState(geolocation, deg, fullTime);
-            
-            if (save.getDegreeUnits().equals("F"))
-                fCheck.setSelected(true);
-            else
-                cCheck.setSelected(true);
+                String name = reader.readLine();
+                String country = reader.readLine();
+                String state = reader.readLine();
+                Double lat = Double.parseDouble(reader.readLine());
+                Double lon = Double.parseDouble(reader.readLine());
+                String deg = reader.readLine();
+                boolean fullTime = Boolean.parseBoolean(reader.readLine());
+                String distance = reader.readLine();
+
+                Geolocation geolocation = new Geolocation(name, country, state, lat, lon);
+                ArrayList<Geolocation> cities = new ArrayList<>();
+                for(int i = 0; i < 3; i++) {
+                    name = reader.readLine();
+                    country = reader.readLine();
+                    state = reader.readLine();
+                    lat = Double.parseDouble(reader.readLine());
+                    lon = Double.parseDouble(reader.readLine());
+                    Geolocation savedLocation = new Geolocation(name, country, state, lat, lon);
+                    cities.add(savedLocation);
+                }
+                reader.close();
+                save = new SaveState(geolocation, deg, fullTime, distance, cities);
+
+                if (save.getDegreeUnits().equals("F")) /// replace here with settings file 
+                    fCheck.setSelected(true);
+                else
+                    cCheck.setSelected(true);
+
+                if (save.getDistance().equals("MI")) /// replace here with settings file 
+                    miCheck.setSelected(true);
+                else
+                    kmCheck.setSelected(true);
+            } catch(Exception e) {
+                save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false, "MI", getDefaultSavedCities()); // Fill save with default values
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
+                writer.write(save.getGeolocation().toString());
+                writer.write('F');
+                writer.write("\nfalse");
+                writer.write("\nMI\n");
+                for (int i = 0; i < 3; i++) {
+                    writer.write(savedCities.get(i).toString());
+                }
+
+                writer.close();
+            }
         }
         Geolocation location = save.getGeolocation();
         city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
-        updateLabels(save.getGeolocation());
+        updateLabels();
        
     }
 
 
-    
-    @FXML 
+   
+   @FXML 
     void fClicked(ActionEvent event) {
         if (cCheck.isSelected()) {
             cCheck.setSelected(false);
         }
         save.setDegreeUnits("F");
-        updateFile();
+        SaveState.updateFile();
         updateTempLabels();
     }
-    
-    @FXML
+    @FXML 
     void cClicked(ActionEvent event) {
         if (fCheck.isSelected()) {
             fCheck.setSelected(false);
         }
         save.setDegreeUnits("C");
-        updateFile();
+        SaveState.updateFile();
         updateTempLabels();
     }
-   
     
+    
+    @FXML 
+    void miClicked() {
+        if (kmCheck.isSelected()) {
+            kmCheck.setSelected(false);
+        }
+         
+        save.setDistance("MI");
+        SaveState.updateFile();
+        updateDistanceLabels();
+        
+    }
+    
+    @FXML 
+    void kmClicked() {
+        if (miCheck.isSelected()) {
+            miCheck.setSelected(false);
+        }
+        save.setDistance("KM");
+        SaveState.updateFile();
+        updateDistanceLabels();
+    }
     @FXML
-    void openSettings(ActionEvent event) {
+    void openSavedCities(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
-            Scene scene = new Scene(root);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("tertiary.fxml"));
+
+            Scene scene = new Scene(fxmlLoader.load(), 680, 500);
             Stage stage = new Stage();
+            stage.setTitle("Saved Cities");
             stage.setScene(scene);
             stage.show();
-        } catch (IOException ex) {
-            System.out.println("Error loading settings.");
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
     }
             
             
     @FXML
-    void updateCity(ActionEvent event) {
+    void updateCity() {
         try {
             Geolocation location;
             location = WeatherAPIDriver.getGeoLocation(search.getText());
@@ -650,30 +717,25 @@ public class PrimaryController {
             city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
             city.printCityData();
             save.setGeolocation(location);
-            updateFile();
-            updateLabels(location);
+            SaveState.updateFile();
+            updateLabels();
             
         } catch (NullPointerException e) {
             // do something here
             search.setText("Error parsing input.");
         }
     }
-    private void updateFile()  {
-        BufferedWriter writer = null;
-        try {
-            File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt");
-            writer = new BufferedWriter(new FileWriter(file));
-            writer.write(save.getGeolocation().toString());
-            writer.write(save.getDegreeUnits());
-            writer.write("\n" + save.getUsing24Hour());
-            writer.close();
-        } catch (IOException ex) {
-            System.out.println("Error writing to file save.txt");
-        } 
+    private ArrayList<Geolocation> getDefaultSavedCities() {
+        ArrayList<Geolocation> cities = new ArrayList<>();
+
+        cities.add(new Geolocation("Paris", "Ile-de-France", "FR", 48.8589, 2.32));
+        cities.add(new Geolocation("New York County", "New York", "US", 40.7127, -74.006));
+        cities.add(new Geolocation("London", "England", "GB", 51.5073, -0.1276));
         
+        return cities;
     }
-    private void updateLabels(Geolocation location) {
-    
+    private void updateLabels() {
+        Geolocation location = save.getGeolocation();
         if (!location.getState().equals(""))
             cityNameLabel.setText(location.getCityName() + ", " + location.getState() + ", " + location.getCountry());
         else 
@@ -689,7 +751,7 @@ public class PrimaryController {
         
         addImages();
         updateTempLabels();
-        updateWindInfo();
+
         
         sunsetLabel.setText("Sunset: " + resolveTimeAMPM(city.getDailyData().get(0).getSunset()));
         sunriseLabel.setText("Sunrise: " + resolveTimeAMPM(city.getDailyData().get(0).getSunrise()));
@@ -700,22 +762,54 @@ public class PrimaryController {
         uvLabelNum.setText(String.valueOf(city.getUvi()));
         uvLabelDesc.setText(getUVDesc(city.getUvi()));
         
+        updateDistanceLabels();
+        
+    }
+    private void updateDistanceLabels() {
+        updateVisibility();
+        updateWindInfo();
+    }
+    private void updateVisibility() {
         int vis = city.getVisibility();
         visibilityDescLabel.setText(getVisibilityDesc(vis));
-        if (vis != 10000)
-            visibilityLabel.setText(vis/1000 + "Miles");
-        else
-            visibilityLabel.setText("10+ Miles");
         
+        if (save.getDistance().equals("KM")) {
+            if (vis != 10000)
+                visibilityLabel.setText(vis/1000 + "Km");
+            else
+                visibilityLabel.setText("10+ Km");
+        }
+        else {
+            if (vis > 9656)
+                visibilityLabel.setText("6+ MI");
+            else {
+                DecimalFormat f = new DecimalFormat("##.00");
+                visibilityLabel.setText(f.format(vis * 0.000621371) + " MI");
+            }
+        }
     }
     private void updateWindInfo() {
         double deg = (city.getWindDegrees() + 180) % 360;
         double speed = city.getWindSpeed();
-        windspeedLabel.setText("Wind " + speed + " MPH");
-        gustLabel.setText("Gust: " + city.getWindGust() + " MPH");
+        double gust = city.getWindGust();
+        String unit = "";
         winddirectionLabel.setText(getWindDirection(deg) + ", " + String.format("%.0f", deg) + "°");
         winddirectionIMG.setRotate(deg);
+        DecimalFormat f = new DecimalFormat("##.00");
+        if (save.getDistance().equals("MI")) {
+            unit = " MPH";
+            speed = speed * 2.23694;
+            gust = gust * 2.23694;
+        }
+        else {
+            unit = " KMH";
+            speed = speed * 3.6;
+            gust = gust * 3.6;
+        }
+        windspeedLabel.setText("Wind " + f.format(speed) + unit);
+        gustLabel.setText("Gust: " + f.format(gust) + unit);
     }
+    
     private void updateTempLabels() {
         if(save.getDegreeUnits().equals("F")) {
             updateHourlyFieldsF();
@@ -728,6 +822,7 @@ public class PrimaryController {
             updateDailyTempLabelsC();
         }
     }
+   
     private String getVisibilityDesc(int visibility) {
         visibility = visibility /1000;
         if (visibility >= 0 && visibility <= 3)

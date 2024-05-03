@@ -34,7 +34,7 @@
                   <Insets left="3.0" top="3.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Settings">
+            <Button fx:id="savedCities" mnemonicParsing="false" onAction="#openSavedCities" prefHeight="26.0" prefWidth="90.0" text="Saved Cities">
                <HBox.margin>
                   <Insets left="254.0" top="2.0" />
                </HBox.margin>
@@ -1272,16 +1272,37 @@
    <bottom>
       <HBox prefHeight="22.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
-            <CheckBox fx:id="fCheck" mnemonicParsing="false" onAction="#fClicked" text="Fahrenheit" textFill="#cfcfcf">
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <CheckBox fx:id="fCheck" mnemonicParsing="false" onAction="#fClicked" text="Fahrenheit" textFill="#cfcfcf">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="cCheck" mnemonicParsing="false" onAction="#cClicked" text="Celsius" textFill="#cfcfcf">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <CheckBox fx:id="miCheck" mnemonicParsing="false" onAction="#miClicked" text="MI" textFill="#cfcfcf">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="kmCheck" mnemonicParsing="false" onAction="#kmClicked" text="KM" textFill="#cfcfcf">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="30.0" />
                </HBox.margin>
-            </CheckBox>
-            <CheckBox fx:id="cCheck" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cClicked" text="Celsius" textFill="#cfcfcf">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </CheckBox>
+            </HBox>
          </children>
       </HBox>
    </bottom>
