@@ -576,6 +576,9 @@ public class MainWinController {
     @FXML
     private Text visibilityLabel;
     
+    @FXML
+    private Button refreshButton;
+    
 
     @FXML
     void initialize() throws IOException {
@@ -698,17 +701,23 @@ public class MainWinController {
     }
     @FXML
     void openSavedCities(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("tertiary.fxml"));
+        if (stage.getScene() == null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("tertiary.fxml"));
 
-            Scene scene = new Scene(fxmlLoader.load(), 680, 500);
-            stage.setTitle("Saved Cities");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+                Scene scene = new Scene(fxmlLoader.load(), 680, 500);
+                stage.setTitle("Saved Cities");
+                stage.setScene(scene);
+                stage.setOnHidden(events -> {
+                    System.out.println("setonhidden");
+                    stage.setScene(null);
+                });
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
         }
     }
             
@@ -727,12 +736,25 @@ public class MainWinController {
             
         } catch (NullPointerException e) {
             // do something here
-            search.setText("Error parsing input.");
+            search.setText("Error updating city info");
         }
     }
     @FXML
     void saveCity() {
         SaveState.addSavedCity(save.getGeolocation());
+    }
+    
+    @FXML
+    void refresh() {
+        try {
+            city = WeatherAPIDriver.PopulateCityInfo(save.getGeolocation().getLat(), save.getGeolocation().getLon());
+            city.printCityData();
+            updateLabels();
+            
+        } catch (NullPointerException e) {
+            // do something here
+            search.setText("Error parsing input.");
+        }
     }
     private ArrayList<Geolocation> getDefaultSavedCities() {
         ArrayList<Geolocation> cities = new ArrayList<>();

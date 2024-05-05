@@ -324,8 +324,8 @@ public class SavedCitiesController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("primary.fxml"));
 
+            Stage stage = App.getStage();
             Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-            Stage stage = new Stage();
             stage.setTitle("Weather Info");
             stage.setScene(scene);
             stage.show();
