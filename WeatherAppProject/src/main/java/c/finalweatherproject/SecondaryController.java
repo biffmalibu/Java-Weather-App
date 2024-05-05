@@ -1,6 +1,6 @@
 package c.finalweatherproject;
 
-import static c.finalweatherproject.PrimaryController.save;
+import static c.finalweatherproject.MainWinController.save;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

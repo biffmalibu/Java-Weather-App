@@ -145,6 +145,8 @@ public class CityDaily {
         return day;
     }
     // Getters
+    public int getDt() {return dt;}
+    
     public String getDay() { return day; }
     
     public int getSunrise() { return sunrise; }

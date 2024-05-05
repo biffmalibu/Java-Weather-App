@@ -23,7 +23,6 @@ public class CityHourly {
     private double dewPoint;
     private double uvi;
     private int clouds;
-    private int visibility;
     private double windSpeed;
     private int windDegrees;
     private double windGust;
@@ -35,7 +34,7 @@ public class CityHourly {
 
     // Constructor
     public CityHourly(int dt, double curTemp, double feelsLike, int pressure, int humidity, double dewPoint, double uvi,
-                      int clouds, int visibility, double windSpeed, int windDegrees, double windGust,
+                      int clouds, double windSpeed, int windDegrees, double windGust,
                       int weatherId, String weatherMain, String weatherDesc, double pop) {
         this.dt = dt;
         this.curTemp = curTemp;
@@ -45,7 +44,6 @@ public class CityHourly {
         this.dewPoint = dewPoint;
         this.uvi = uvi;
         this.clouds = clouds;
-        this.visibility = visibility;
         this.windSpeed = windSpeed;
         this.windDegrees = windDegrees;
         this.windGust = windGust;
@@ -65,7 +63,6 @@ public class CityHourly {
                 ", dewPoint=" + getFahrenheit(dewPoint) +
                 ", uvi=" + uvi +
                 ", clouds=" + clouds +
-                ", visibility=" + visibility +
                 ", windSpeed=" + windSpeed +
                 ", windDegrees=" + windDegrees +
                 ", windGust=" + windGust +
@@ -108,8 +105,6 @@ public class CityHourly {
     public double getUvi() { return uvi; }
 
     public int getClouds() { return clouds; }
-
-    public int getVisibility() { return visibility; }
 
     public double getWindSpeed() { return windSpeed; }
 

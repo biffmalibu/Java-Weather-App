@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: rgb(22, 27, 46);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.PrimaryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: rgb(22, 27, 46);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.MainWinController">
    <top>
       <HBox prefHeight="0.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
@@ -1285,6 +1285,9 @@
                      </HBox.margin>
                   </CheckBox>
                </children>
+               <HBox.margin>
+                  <Insets top="2.0" />
+               </HBox.margin>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -1300,9 +1303,14 @@
                   </CheckBox>
                </children>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets left="30.0" top="2.0" />
                </HBox.margin>
             </HBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveCity" text="Save">
+               <HBox.margin>
+                  <Insets bottom="2.0" left="527.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </bottom>

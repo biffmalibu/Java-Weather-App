@@ -50,11 +50,25 @@ public class SaveState {
     public void setSavedCities(ArrayList<Geolocation> savedCities) {
         this.savedCities = savedCities;
     }
+    
     @Override
     public String toString() {
         return (homeTown.getCityName() + " ," + degreeUnits + " ," + using24Hour);
     }
-    
+    public static void addSavedCity(Geolocation location) {
+        boolean duplicateLocation = false;
+        for (int i = 0; i < 3; i++) {
+            if (location.getLat() == savedCities.get(i).getLat() && location.getLon() == savedCities.get(i).getLon()) {
+                duplicateLocation = true;
+            }
+        }
+        if (!duplicateLocation) {
+            savedCities.remove(0);
+            savedCities.add(location);
+            updateFile();
+        }
+        
+    }
     public static void updateFile()  {
         BufferedWriter writer = null;
         try {

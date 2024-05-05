@@ -7,9 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +30,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class PrimaryController {
+public class MainWinController {
     
     private static CityData city;
     public static SaveState save;
+    private static Stage stage = new Stage();
     
     @FXML
     private CheckBox kmCheck;
@@ -286,7 +289,7 @@ public class PrimaryController {
     private TextField search;
     
     @FXML
-    private Button savedCities;
+    private Button savedCitiesButton;
     
     @FXML
     private Text temperatureLabel;
@@ -299,6 +302,9 @@ public class PrimaryController {
     
     @FXML
     private Button goButton;
+    
+    @FXML
+    private Button saveButton;
     
     @FXML
     private ImageView img1;
@@ -697,7 +703,6 @@ public class PrimaryController {
             fxmlLoader.setLocation(getClass().getResource("tertiary.fxml"));
 
             Scene scene = new Scene(fxmlLoader.load(), 680, 500);
-            Stage stage = new Stage();
             stage.setTitle("Saved Cities");
             stage.setScene(scene);
             stage.show();
@@ -724,6 +729,10 @@ public class PrimaryController {
             // do something here
             search.setText("Error parsing input.");
         }
+    }
+    @FXML
+    void saveCity() {
+        SaveState.addSavedCity(save.getGeolocation());
     }
     private ArrayList<Geolocation> getDefaultSavedCities() {
         ArrayList<Geolocation> cities = new ArrayList<>();
@@ -763,7 +772,18 @@ public class PrimaryController {
         uvLabelDesc.setText(getUVDesc(city.getUvi()));
         
         updateDistanceLabels();
+        updateDayOfWeekLabels();
         
+    }
+    private void updateDayOfWeekLabels() {
+        day1.setText("Today");
+        for(int i = 1; i < 8; i++) {
+            try {
+                String dayLabel = "day" + (i + 1);
+                Text day = (Text) getClass().getDeclaredField(dayLabel).get(this);
+                day.setText(getDayOfWeek(city.getDailyData().get(i).getDt()));
+            } catch (Exception e) {}
+        }
     }
     private void updateDistanceLabels() {
         updateVisibility();
@@ -1108,5 +1128,16 @@ public class PrimaryController {
             }
         });
         dailyImagesThread.start();
+    }
+    public static String getDayOfWeek(long epochSeconds) {
+        // Convert epoch time to LocalDateTime
+        Instant instant = Instant.ofEpochSecond(epochSeconds);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        // Get the day of the week from LocalDateTime
+        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
+
+        // Return the day of the week with only the first letter capitalized
+        return dayOfWeek.toString().substring(0, 1) + dayOfWeek.toString().substring(1).toLowerCase();
     }
 }

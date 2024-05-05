@@ -1,17 +1,24 @@
 package c.finalweatherproject;
 
-import static c.finalweatherproject.PrimaryController.save;
+import static c.finalweatherproject.MainWinController.save;
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 
 
-public class TertiaryController {
+public class SavedCitiesController {
     @FXML
     private Text cityNameLabel1;
 
@@ -173,8 +180,10 @@ public class TertiaryController {
                 System.out.println("Error applying distance units");
             }
         }
+        int k = 2;
         for (int i = 0; i < 3; i++) {
-            Geolocation curCity = citiesArrayList.get(i);
+            Geolocation curCity = citiesArrayList.get(k);
+            k--;
             try {
                 CityData cities = WeatherAPIDriver.PopulateCityInfo(curCity.getLat(), curCity.getLon());
                 String cityName = "cityNameLabel" + (i + 1);
@@ -305,6 +314,37 @@ public class TertiaryController {
             } catch(Exception e) {}
 
         }
+    }
+    @FXML
+    void openMainWindow(int windowNum) {
+        save.setGeolocation(save.getSavedCities().get(windowNum));
+        SaveState.updateFile();
+        
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("primary.fxml"));
+
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+            Stage stage = new Stage();
+            stage.setTitle("Weather Info");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
+    }
+    @FXML
+    void openMain1() {
+        openMainWindow(2);
+    }
+    @FXML
+    void openMain2() {
+        openMainWindow(1);
+    }
+    @FXML
+    void openMain3() {
+        openMainWindow(0);
     }
     private String getUVDesc(double uvi) {
         if (uvi >= 0 && uvi < 3) {

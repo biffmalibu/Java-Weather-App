@@ -48,7 +48,6 @@ public class WeatherAPIDriver {
                         hourlyForecast.get("dew_point").getAsDouble(),
                         hourlyForecast.get("uvi").getAsDouble(),
                         hourlyForecast.get("clouds").getAsInt(),
-                        hourlyForecast.get("visibility").getAsInt(),
                         hourlyForecast.get("wind_speed").getAsDouble(),
                         hourlyForecast.get("wind_deg").getAsInt(),
                         hourlyForecast.get("wind_gust").getAsDouble(),
@@ -284,6 +283,7 @@ public class WeatherAPIDriver {
         } else {
             // City
             return getGeoLocationFromCity(input.replaceAll("\\s", "%20"));
+            //return getGeoLocationFromCity(input);
         }
     }
 }

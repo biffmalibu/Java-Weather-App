@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="680.0" style="-fx-background-color: rgb(22, 27, 46);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.TertiaryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="680.0" style="-fx-background-color: rgb(22, 27, 46);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c.finalweatherproject.SavedCitiesController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox maxWidth="578.0" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+            <VBox maxWidth="578.0" onMouseClicked="#openMain1" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                <VBox.margin>
                   <Insets left="50.0" top="10.0" />
                </VBox.margin>
@@ -306,7 +306,7 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox layoutX="60.0" layoutY="20.0" maxWidth="578.0" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+            <VBox layoutX="60.0" layoutY="20.0" maxWidth="578.0" onMouseClicked="#openMain2" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                <children>
                   <HBox maxWidth="560.0" prefHeight="126.0" prefWidth="650.0">
                      <children>
@@ -598,7 +598,7 @@
                   <Insets left="50.0" top="20.0" />
                </VBox.margin>
             </VBox>
-            <VBox layoutX="10.0" layoutY="151.0" maxWidth="578.0" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+            <VBox layoutX="10.0" layoutY="151.0" maxWidth="578.0" onMouseClicked="#openMain3" prefHeight="130.0" prefWidth="578.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                <children>
                   <HBox maxWidth="560.0" prefHeight="126.0" prefWidth="650.0">
                      <children>
