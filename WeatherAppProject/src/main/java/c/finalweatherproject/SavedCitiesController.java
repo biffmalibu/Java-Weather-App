@@ -331,7 +331,7 @@ public class SavedCitiesController { // Controller for the saved cities window
 
             Stage stage = App.getStage();
             Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-            stage.setTitle("Weather Info");
+            stage.setTitle(save.getGeolocation().getCityName() + " " + save.getGeolocation().getState() + ", " + save.getGeolocation().getCountry() + " Weather Info");
             stage.setScene(scene);
             stage.setResizable(false); // Disable resizing
             stage.show(); // Show the stage

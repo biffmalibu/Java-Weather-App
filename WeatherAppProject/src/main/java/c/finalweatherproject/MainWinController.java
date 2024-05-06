@@ -599,6 +599,13 @@ public class MainWinController {
     @FXML
     private Text winddirectionLabel;
     
+    @FXML 
+    private Text windUnits1;
+    
+    @FXML 
+    private Text windUnits2;
+    
+   
     @FXML
     private Text pressureLabel;
     
@@ -699,6 +706,10 @@ public class MainWinController {
     }
 
 
+   @FXML 
+   void searchClicked() {
+       search.selectAll();
+   }
    /**
     * This method sets the temperature unit to Fahrenheit and updates the labels with the new temperature unit
     */
@@ -788,6 +799,7 @@ public class MainWinController {
             city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon()); // Populate the city object with the new city data
             save.setGeolocation(location); // Set the save object's geolocation to the new city data
             SaveState.updateFile(); // Update the save file with the new city data
+            App.getStage().setTitle(save.getGeolocation().getCityName() + " " + save.getGeolocation().getState() + ", " + save.getGeolocation().getCountry() + " Weather Info");
             updateLabels(); // Update the labels with the new city data
             
         } catch (NullPointerException e) { // Catch any exceptions that occur while updating the city data
@@ -935,21 +947,23 @@ public class MainWinController {
         double speed = city.getWindSpeed(); // Get the wind speed
         double gust = city.getWindGust(); // Get the wind gust
         String unit = "";
-        winddirectionLabel.setText(getWindDirection(deg) + ", " + String.format("%.0f", deg) + "°"); // Set the wind direction label to the wind direction
+        winddirectionLabel.setText(getWindDirection(deg)); // Set the wind direction label to the wind direction
         winddirectionIMG.setRotate(deg); // Rotate the wind direction image to match the wind direction
         DecimalFormat f = new DecimalFormat("##.00"); // Set the wind speed and gust labels to the wind speed and gust
         if (save.getDistance().equals("MI")) { // If the distance unit is Miles, set the wind speed and gust labels to the wind speed and gust in MPH
-            unit = " MPH";
+            unit = "MPH";
             speed = speed * 2.23694; // Convert the wind speed to MPH
             gust = gust * 2.23694; // Convert the wind gust to MPH
         }
         else { // If the distance unit is Kilometers, set the wind speed and gust labels to the wind speed and gust in KMH
-            unit = " KMH";
+            unit = "KMH";
             speed = speed * 3.6; // Convert the wind speed to KMH
             gust = gust * 3.6; // Convert the wind gust to KMH
         }
-        windspeedLabel.setText("Wind " + f.format(speed) + unit); // Set the wind speed label to the wind speed
-        gustLabel.setText("Gust: " + f.format(gust) + unit); // Set the gust label to the wind gust
+        windspeedLabel.setText(f.format(speed)); // Set the wind speed label to the wind speed
+        gustLabel.setText(f.format(gust)); // Set the gust label to the wind gust
+        windUnits1.setText(unit);
+        windUnits2.setText(unit);
     }
     
     /**
@@ -1139,28 +1153,28 @@ public class MainWinController {
         switch (direction) {
             case 0:
             case 8:
-                windDirection = "North";
+                windDirection = "N";
                 break;
             case 1:
-                windDirection = "Northeast";
+                windDirection = "NE";
                 break;
             case 2:
-                windDirection = "East";
+                windDirection = "E";
                 break;
             case 3:
-                windDirection = "Southeast";
+                windDirection = "SE";
                 break;
             case 4:
-                windDirection = "South";
+                windDirection = "S";
                 break;
             case 5:
-                windDirection = "Southwest";
+                windDirection = "SW";
                 break;
             case 6:
-                windDirection = "West";
+                windDirection = "W";
                 break;
             case 7:
-                windDirection = "Northwest";
+                windDirection = "NW";
                 break;
             default:
                 windDirection = "";

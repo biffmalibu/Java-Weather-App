@@ -36,7 +36,7 @@
                   <Insets left="91.0" top="3.0" />
                </HBox.margin>
             </Button>
-            <TextField fx:id="search" prefHeight="25.0" prefWidth="250.0" text="Enter Zipcode, or City, State">
+            <TextField fx:id="search" onMouseClicked="#searchClicked" prefHeight="25.0" prefWidth="250.0" text="Enter Zipcode, or City, State">
                <HBox.margin>
                   <Insets left="3.0" top="3.0" />
                </HBox.margin>
@@ -1024,45 +1024,89 @@
                      <children>
                         <HBox layoutX="20.0" layoutY="96.0" maxHeight="75.0" maxWidth="220.0" minWidth="220.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="75.0" prefWidth="38.0">
                                  <children>
-                                    <Text fx:id="windspeedLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind: 14 MPH" textAlignment="CENTER">
+                                    <ImageView fx:id="winddirectionIMG" fitHeight="50.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/arrow.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fx:id="winddirectionLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="NE" textAlignment="CENTER" wrappingWidth="49.55468559265137">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="14.0" />
                                        </font>
                                        <VBox.margin>
-                                          <Insets top="2.5" />
+                                          <Insets />
                                        </VBox.margin>
                                     </Text>
-                                    <Text fx:id="gustLabel" fill="#cfcfcf" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gusts: 28 MPH" textAlignment="CENTER">
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="15.0" top="3.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox prefHeight="40.0" prefWidth="111.0">
+                                 <children>
+                                    <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="10.0" />
                                        </font>
                                        <VBox.margin>
-                                          <Insets top="5.0" />
+                                          <Insets bottom="-10.0" left="10.0" top="5.0" />
                                        </VBox.margin>
                                     </Text>
-                                    <Text fx:id="winddirectionLabel" fill="#cfcfcf" layoutX="10.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Northwest, 32Of" textAlignment="CENTER" wrappingWidth="101.64990234375">
+                                    <HBox prefHeight="19.0" prefWidth="101.0">
+                                       <children>
+                                          <Text fx:id="windspeedLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="15.23">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="windUnits1" fill="#cfcfcf" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MPH">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
                                        <VBox.margin>
-                                          <Insets top="5.0" />
+                                          <Insets left="10.0" top="6.0" />
                                        </VBox.margin>
+                                    </HBox>
+                                    <Text fill="#cfcfcf" layoutX="20.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gust">
                                        <font>
-                                          <Font size="13.0" />
+                                          <Font size="10.0" />
                                        </font>
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="10.0" top="5.0" />
+                                       </VBox.margin>
                                     </Text>
+                                    <HBox layoutX="20.0" layoutY="20.0" prefHeight="19.0" prefWidth="101.0">
+                                       <children>
+                                          <Text fx:id="gustLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="15.23">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="windUnits2" fill="#cfcfcf" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MPH">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
                                  </children>
                                  <HBox.margin>
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </VBox>
-                              <ImageView fx:id="winddirectionIMG" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets left="27.5" top="12.5" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@images/arrow.png" />
-                                 </image>
-                              </ImageView>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" />
@@ -1296,33 +1340,33 @@
                                  <children>
                                     <VBox prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Text fx:id="summaryLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Expect a day of partly cloudy, with rain in the afternoon" wrappingWidth="128.95164489746094">
+                                          <Text fx:id="summaryLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Expect a day of partly cloudy, with rain in the afternoon" wrappingWidth="192.95152282714844">
                                              <VBox.margin>
-                                                <Insets left="10.0" />
+                                                <Insets left="12.0" />
                                              </VBox.margin>
+                                             <font>
+                                                <Font size="11.0" />
+                                             </font>
                                           </Text>
                                        </children>
                                     </VBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <VBox prefHeight="51.0" prefWidth="40.0">
                                        <children>
-                                          <ImageView fitHeight="30.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="24.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@images/cloudCropped.png" />
                                              </image>
-                                             <HBox.margin>
-                                                <Insets left="5.0" />
-                                             </HBox.margin>
                                           </ImageView>
-                                          <Text fx:id="cloudCoverLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="100%" wrappingWidth="49.506959438323975">
+                                          <Text fx:id="cloudCoverLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="100%" wrappingWidth="41.5068222284317">
                                              <font>
-                                                <Font name="System Bold" size="18.0" />
+                                                <Font name="System Bold" size="14.0" />
                                              </font>
-                                             <HBox.margin>
-                                                <Insets left="5.0" top="2.0" />
-                                             </HBox.margin>
                                           </Text>
                                        </children>
-                                    </HBox>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
                                  </children>
                               </HBox>
                            </children>

@@ -6,6 +6,7 @@
 
 package c.finalweatherproject;
 
+import static c.finalweatherproject.MainWinController.save;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +27,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException { // Start the application
         scene = new Scene(loadFXML("primary"), 1000, 600); // Load the primary fxml file
         this.stage = stage;
-        this.stage.setTitle("Weather Info");
+        this.stage.setTitle(save.getGeolocation().getCityName() + " " + save.getGeolocation().getState() + ", " + save.getGeolocation().getCountry() + " Weather Info");
         this.stage.setScene(scene);
         this.stage.setResizable(false); // Disable resizing
         this.stage.show(); 

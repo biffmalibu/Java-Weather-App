@@ -1,8 +1,8 @@
-Boston
+Beverly
 US
 Massachusetts
-42.3554334
--71.060511
+42.5584284
+-70.8800491
 F
 MI
 New York County
