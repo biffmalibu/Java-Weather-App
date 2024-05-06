@@ -1,3 +1,9 @@
+/*********************************************************************************************************************************
+* File: CityData.java                                                                                                            *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to store the complete weather data of a city and return the data when needed.                       *
+**********************************************************************************************************************************/
+
 package c.finalweatherproject;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -14,9 +20,8 @@ import java.util.ArrayList;
  *
  * @author bradf
  */
-import java.util.ArrayList;
 
-public class CityData {
+public class CityData { // Complete weather data fields
     private int dt;
     private int sunrise;
     private int sunset;
@@ -33,8 +38,6 @@ public class CityData {
     private double windGust;
     private double tempMin;
     private double tempMax;
-    
-
     private int weatherId;
     private String weatherMain;
     private String weatherDesc;
@@ -72,8 +75,11 @@ public class CityData {
         this.hourlyData = hourlyData;
         this.dailyData = dailyData;
     }
+    /**
+     * This method is used to print the city data to the console
+     */
     public void printCityData() {
-        System.out.println("City Data:");
+        System.out.println("City Data:"); // Print the city data
         System.out.println("----------");
         System.out.println("Date and Time (dt): " + resolveHourFromEpoch(dt));
         System.out.println("Sunrise: " + resolveHourFromEpoch(sunrise) + " " + sunrise);
@@ -95,15 +101,20 @@ public class CityData {
         System.out.println("Weather Main: " + weatherMain);
         System.out.println("Weather Description: " + weatherDesc);
         System.out.println("Hourly Data:");
-        for (CityHourly hourly : hourlyData) {
+        for (CityHourly hourly : hourlyData) { // Iterate through the hourly data
             System.out.println(hourly);
         }
-        System.out.println("Daily Data:");
-        for (CityDaily daily : dailyData) {
+        System.out.println("Daily Data:"); 
+        for (CityDaily daily : dailyData) { // Iterate through the daily data
             System.out.println(daily);
         }
     }
 
+    /**
+     * This method is used to resolve the hour from the epoch time
+     * @param epoch - The epoch time
+     * @return String - The hour
+     */
     private String resolveHourFromEpoch(int epoch) {
         // Convert epoch time to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
@@ -114,9 +125,15 @@ public class CityData {
         
         return hour;
     }
+    /**
+     * This method is used to convert Kelvin to Fahrenheit
+     * @param k - The temperature in Kelvin
+     * @return int - The temperature in Fahrenheit
+     */
     private int getFahrenheit(double k) {
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
+
     // Getters
     public int getDt() { return dt; }
 

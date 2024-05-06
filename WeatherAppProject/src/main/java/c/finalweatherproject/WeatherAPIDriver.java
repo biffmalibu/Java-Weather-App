@@ -1,3 +1,8 @@
+/*********************************************************************************************************************************
+* File: WeatherAPIDriver.java                                                                                                    *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to get the weather data from the OpenWeatherMap API and return the data when needed.                *            *
+**********************************************************************************************************************************/
 package c.finalweatherproject;
 
 import com.google.gson.Gson;
@@ -12,25 +17,31 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class WeatherAPIDriver {
+public class WeatherAPIDriver { 
 
+    /**
+     * This method is used to get the weather data of a city
+     * @param latitude - The latitude of the city
+     * @param longitude - The longitude of the city
+     * @return CityData - The weather data of the city
+     */
     public static CityData PopulateCityInfo(double latitude, double longitude) {
-        JsonObject jsonObject = getWeatherApiResponse(latitude, longitude);
-        ArrayList<CityHourly> cityHourlyArrayList = new ArrayList<>();
+        JsonObject jsonObject = getWeatherApiResponse(latitude, longitude); // Get the weather data from the API
+        ArrayList<CityHourly> cityHourlyArrayList = new ArrayList<>(); // Create an array list to store hourly and daily data
         ArrayList<CityDaily> cityDailyArrayList = new ArrayList<>();
 
-        if (jsonObject != null) {
-            JsonObject current = jsonObject.getAsJsonObject("current");
-            JsonArray weatherArray = current.getAsJsonArray("weather");
-            JsonObject weatherObject = weatherArray.get(0).getAsJsonObject();
+        if (jsonObject != null) { // If the API call was successful
+            JsonObject current = jsonObject.getAsJsonObject("current"); // Get the current weather data
+            JsonArray weatherArray = current.getAsJsonArray("weather"); // Get the weather data
+            JsonObject weatherObject = weatherArray.get(0).getAsJsonObject(); 
 
-            int weatherId = weatherObject.get("id").getAsInt();
-            String weatherMain = weatherObject.get("main").getAsString();
-            String weatherDescription = weatherObject.get("description").getAsString();
+            int weatherId = weatherObject.get("id").getAsInt(); // Get the weather ID
+            String weatherMain = weatherObject.get("main").getAsString(); // Get the weather main
+            String weatherDescription = weatherObject.get("description").getAsString(); // Get the weather description
             
-            JsonArray hourlyArray = jsonObject.getAsJsonArray("hourly");
+            JsonArray hourlyArray = jsonObject.getAsJsonArray("hourly"); // Get the hourly weather data
 
-            for (int i = 0; i < hourlyArray.size(); i++) {
+            for (int i = 0; i < hourlyArray.size(); i++) { // Loop through the hourly data
                 JsonObject hourlyForecast = hourlyArray.get(i).getAsJsonObject();
                 weatherArray = hourlyForecast.getAsJsonArray("weather");
                 weatherObject = weatherArray.get(0).getAsJsonObject();
@@ -39,7 +50,7 @@ public class WeatherAPIDriver {
                 weatherMain = weatherObject.get("main").getAsString();
                 weatherDescription = weatherObject.get("description").getAsString();
 
-                CityHourly cityHourly = new CityHourly(
+                CityHourly cityHourly = new CityHourly( // Create a new hourly object for each hour of the day and add it to the array list
                         hourlyForecast.get("dt").getAsInt(),
                         hourlyForecast.get("temp").getAsDouble(),
                         hourlyForecast.get("feels_like").getAsDouble(),
@@ -56,11 +67,11 @@ public class WeatherAPIDriver {
                         weatherDescription,
                         hourlyForecast.get("pop").getAsDouble()
                 );
-                cityHourlyArrayList.add(cityHourly);
+                cityHourlyArrayList.add(cityHourly); // Add the hourly object to the array list
             }
             
-            JsonArray dailyArray = jsonObject.getAsJsonArray("daily");
-            for (int i = 0; i < dailyArray.size(); i++) {
+            JsonArray dailyArray = jsonObject.getAsJsonArray("daily"); // Get the daily weather data
+            for (int i = 0; i < dailyArray.size(); i++) { // Loop through the daily data
                 JsonObject dailyForecast = dailyArray.get(i).getAsJsonObject();
                 JsonObject tempObject = dailyForecast.getAsJsonObject("temp");
 
@@ -82,7 +93,7 @@ public class WeatherAPIDriver {
                 weatherMain = weatherObject.get("main").getAsString();
                 weatherDescription = weatherObject.get("description").getAsString();
 
-                CityDaily cityDaily = new CityDaily(
+                CityDaily cityDaily = new CityDaily( // Create a new daily object for each day of the week and add it to the array list
                         dailyForecast.get("dt").getAsInt(),
                         dailyForecast.get("sunrise").getAsInt(),
                         dailyForecast.get("sunset").getAsInt(),
@@ -116,7 +127,7 @@ public class WeatherAPIDriver {
                 cityDailyArrayList.add(cityDaily);
             }
 
-            CityData cityData = new CityData(
+            CityData cityData = new CityData( // Create a new city data object with the current weather data and the hourly and daily data
                     current.get("dt").getAsInt(),
                     current.get("sunrise").getAsInt(),
                     current.get("sunset").getAsInt(),
@@ -143,33 +154,38 @@ public class WeatherAPIDriver {
             return cityData;
 
         } else {
-            System.out.println("Failed to fetch weather data from the API.");
+            System.out.println("Failed to fetch weather data from the API."); // If the API call was unsuccessful
             return null;
         }
     }
     
-    private static JsonObject getWeatherApiResponse(double latitude, double longitude) {
+    /**
+     * This method is used to get the weather data of a city
+     * @param latitude - The latitude of the city
+     * @param longitude - The longitude of the city
+     * @return JsonObject - The weather data of the city
+     */
+    private static JsonObject getWeatherApiResponse(double latitude, double longitude) { // Get the weather data from the API
         try {
-            String apiUrl = "https://api.openweathermap.org/data/3.0/onecall" +
+            String apiUrl = "https://api.openweathermap.org/data/3.0/onecall" + // API URL
                     "?lat=" + latitude +
                     "&lon=" + longitude +
                     "&exclude=minutely" +
                     "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
-            System.out.println("URL: " + apiUrl);
             URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // Open a connection to the API
+            connection.setRequestMethod("GET"); // Set the request method to GET 
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); // Read the data from the API
+            StringBuilder response = new StringBuilder(); // Create a string builder to store the response
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { // Loop through the response
                 response.append(line);
             }
             reader.close();
 
-            String jsonResponse = response.toString();
-            System.out.println(jsonResponse);
+            String jsonResponse = response.toString(); // Convert the response to a string
+            //System.out.println(jsonResponse);
 
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
@@ -178,42 +194,48 @@ public class WeatherAPIDriver {
 
             return jsonObject;
 
-        } catch (Exception e) {
+        } catch (Exception e) { // If an error occurs
             System.out.println("API Error while retrieving: lat: " + latitude + " long: " + longitude);
             e.printStackTrace();
         }
         return null;
     }
-    public static AQIData getAQIData(Double latitude, Double longitude) {
-        String apiUrl = "https://api.openweathermap.org/data/2.5/air_pollution" +
+    /**
+     * This method is used to get the air quality data of a city
+     * @param latitude - The latitude of the city
+     * @param longitude - The longitude of the city
+     * @return AQIData - The air quality data of the city
+     */
+    public static AQIData getAQIData(Double latitude, Double longitude) { 
+        String apiUrl = "https://api.openweathermap.org/data/2.5/air_pollution" + // API URL
                         "?lat=" + latitude +
                         "&lon=" + longitude +
                         "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
-        System.out.println(apiUrl);
+        //System.out.println(apiUrl);
 
-        try {
+        try { // Get the air quality data from the API
             URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // Open a connection to the API
+            connection.setRequestMethod("GET"); // Set the request method to GET
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); // Read the data from the API
+            StringBuilder response = new StringBuilder(); // Create a string builder to store the response
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { // Loop through the response
                 response.append(line);
             }
             reader.close();
-
+            connection.disconnect();
             Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
+            JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class); // Convert the response to a JSON object
 
             JsonArray list = jsonObject.getAsJsonArray("list");
             JsonObject firstItem = list.get(0).getAsJsonObject();
 
-            JsonObject mainObject = firstItem.getAsJsonObject("main");
-            int aqi = mainObject.get("aqi").getAsInt();
+            JsonObject mainObject = firstItem.getAsJsonObject("main"); // Get the main air quality data
+            int aqi = mainObject.get("aqi").getAsInt(); // Get the air quality index
 
-            JsonObject componentsObject = firstItem.getAsJsonObject("components");
+            JsonObject componentsObject = firstItem.getAsJsonObject("components"); // Get the air quality components
             double co = componentsObject.get("co").getAsDouble();
             double no = componentsObject.get("no").getAsDouble();
             double no2 = componentsObject.get("no2").getAsDouble();
@@ -225,28 +247,32 @@ public class WeatherAPIDriver {
 
             return new AQIData(aqi, co, no, no2, o3, so2, pm2_5, pm10, nh3);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) { // If an error occurs
             return null;
         }
     }
+    /**
+     * This method is used to get the geolocation data of a city
+     * @param zip - The zip code of the city
+     * @return Geolocation - The geolocation data of the city
+     */
     private static Geolocation getGeoLocationFromZip(String zip) {
         try {
-            String apiUrl = "https://api.openweathermap.org/geo/1.0/zip?zip=" + zip + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
+            String apiUrl = "https://api.openweathermap.org/geo/1.0/zip?zip=" + zip + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7"; // API URL
             URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // Open a connection to the API
+            connection.setRequestMethod("GET"); // Set the request method to GET
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); // Read the data from the API
+            StringBuilder response = new StringBuilder(); // Create a string builder to store the response
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { // Loop through the response
                 response.append(line);
             }
             reader.close();
 
-            String jsonResponse = response.toString();
-            System.out.println(jsonResponse);
+            String jsonResponse = response.toString(); // Convert the response to a string
+            //System.out.println(jsonResponse);
 
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
@@ -267,38 +293,43 @@ public class WeatherAPIDriver {
         return null;
     }
 
+    /**
+     * This method is used to get the geolocation data of a city
+     * @param city - The name of the city
+     * @return Geolocation - The geolocation data of the city
+     */
     private static Geolocation getGeoLocationFromCity(String city) {
         try {
-            String apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
+            String apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7"; // API URL
             URL url = new URL(apiUrl);
             System.out.println(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // Open a connection to the API
+            connection.setRequestMethod("GET"); // Set the request method to GET
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); // Read the data from the API
+            StringBuilder response = new StringBuilder(); // Create a string builder to store the response
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { // Loop through the response
                 response.append(line);
             }
             reader.close();
 
-            String jsonResponse = response.toString();
-            System.out.println(jsonResponse);
+            String jsonResponse = response.toString(); 
+            //System.out.println(jsonResponse);
 
             Gson gson = new Gson();
             JsonElement jsonElement = JsonParser.parseString(jsonResponse);
 
-            if (jsonElement.isJsonArray()) {
-                JsonArray jsonArray = jsonElement.getAsJsonArray();
-                if (jsonArray.size() > 0) {
+            if (jsonElement.isJsonArray()) {  // Check if the JSON response is an array
+                JsonArray jsonArray = jsonElement.getAsJsonArray(); 
+                if (jsonArray.size() > 0) { // Check if the array has data
                     JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
                     String name = jsonObject.get("name").getAsString();
                     String country = jsonObject.get("country").getAsString();
                     String state = jsonObject.has("state") ? jsonObject.get("state").getAsString() : "";
                     Double lat = jsonObject.get("lat").getAsDouble();
                     Double lon = jsonObject.get("lon").getAsDouble();
-                    return new Geolocation(name, country, state, lat, lon);
+                    return new Geolocation(name, country, state, lat, lon); // Return the geolocation data
                 } else {
                     System.out.println("No geolocation found for: " + city);
                 }
@@ -313,6 +344,11 @@ public class WeatherAPIDriver {
         }
         return null;
     }
+    /**
+     * This method is used to get the geolocation data of a city
+     * @param input - The input string
+     * @return Geolocation - The geolocation data of the city
+     */
     public static Geolocation getGeoLocation(String input) {
         if (input.matches("\\d{5}")) {
             // Zip code

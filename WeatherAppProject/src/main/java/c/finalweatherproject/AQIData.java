@@ -1,15 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/*********************************************************************************************************************************
+* File: AQIData.java                                                                                                             *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to store the AQI data of a city and return the data when needed.                                    *
+**********************************************************************************************************************************/
 package c.finalweatherproject;
 
 /**
  *
  * @author bradf
  */
-public class AQIData {
-    private int main;
+public class AQIData { 
+    private int main; // AQI fields
     private String mainDesc;
     private double co;
     private double no;
@@ -32,7 +33,7 @@ public class AQIData {
         this.nh3 = nh3;
         this.mainDesc = getAQIMainDesc();
     }
-    public int getMain() {return main;}
+    public int getMain() {return main;} // Getters
     public String getMainDesc() {return mainDesc;}
     public double getCO() {return co;}
     public double getNO() {return no;}
@@ -43,7 +44,11 @@ public class AQIData {
     public double getPM10() {return pm10;}
     public double getNH3() {return nh3;}
 
-    private String getAQIMainDesc() {
+    /*
+     * This method is used to get the AQI description based on the AQI value
+     * @return String - The AQI description
+     */
+    private String getAQIMainDesc() { 
         if (main == 1) {
             return "Good";
         } else if (main == 2) {
@@ -59,6 +64,9 @@ public class AQIData {
             return "Error";
         }
     }
+    /**
+     * This method is used to return the AQI data in a string format
+     */
     @Override
     public String toString() {
         return "AQIData{" + "main=" + main 

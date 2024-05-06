@@ -1,3 +1,9 @@
+/*********************************************************************************************************************************
+* File: CityDaily.java                                                                                                           *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to store the daily weather data of a city and return the data when needed.                          *
+**********************************************************************************************************************************/
+
 package c.finalweatherproject;
 
 import java.time.DayOfWeek;
@@ -18,7 +24,7 @@ import java.util.Locale;
  *
  * @author bradf
  */
-public class CityDaily {
+public class CityDaily { // Daily weather data fields
     private int dt;
     private int sunrise;
     private int sunset;
@@ -83,9 +89,12 @@ public class CityDaily {
         this.clouds = clouds;
         this.uvi = uvi;
         this.pop = pop;
-        this.day = getCurrentDayOfWeek(dt);
+        this.day = getCurrentDayOfWeek(dt); // Get the day of the week based on the epoch time
     }
     
+    /**
+     * This method is used to return the daily weather data in a string format
+     */
     @Override
     public String toString() {
         return "CityDaily{" +
@@ -121,29 +130,40 @@ public class CityDaily {
                 ", pop=" + pop + 
                 '}';
     }
+    /**
+     * This method is used to resolve the hour from the epoch time
+     * @param epoch - The epoch time
+     * @return String - The hour
+     */
     private String resolveHourFromEpoch(int epoch) {
         // Convert epoch time to LocalDateTime
-        LocalDateTime dateTime = LocalDateTime.ofInstant(
-                Instant.ofEpochSecond(epoch),
-                ZoneId.systemDefault()
-        );
-        
-        // Format the hour and minute parts
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
-        String hour = dateTime.format(formatter);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm"); // Format the hour and minute parts
+        String hour = dateTime.format(formatter); 
         
         return hour;
     }
+    /**
+     * This method is used to convert Kelvin to Fahrenheit
+     * @param k - The temperature in Kelvin
+     * @return int - The temperature in Fahrenheit
+     */
     private int getFahrenheit(double k) {
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
     
-    public String getCurrentDayOfWeek(int dt) {
-        LocalDate date = LocalDate.ofEpochDay(dt / (24 * 60 * 60));
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        String day = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault());
+    /**
+     * This method is used to get the day of the week based on the epoch time
+     * @param dt - The epoch time
+     * @return String - The day of the week
+     */
+    private String getCurrentDayOfWeek(int dt) {
+        LocalDate date = LocalDate.ofEpochDay(dt / (24 * 60 * 60)); // Convert epoch time to LocalDate
+        DayOfWeek dayOfWeek = date.getDayOfWeek(); // Get the day of the week
+        String day = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()); // Get the day of the week in full text
         return day;
     }
+
     // Getters
     public int getDt() {return dt;}
     

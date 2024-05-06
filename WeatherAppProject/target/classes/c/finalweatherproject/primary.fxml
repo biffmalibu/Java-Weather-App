@@ -67,7 +67,7 @@
             </Text>
             <HBox prefHeight="74.0" prefWidth="1001.0">
                <children>
-                  <Text fx:id="temperatureLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="38°F" textAlignment="CENTER" wrappingWidth="187.20010662078857">
+                  <Text fx:id="temperatureLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="381°F" textAlignment="CENTER" wrappingWidth="190.4001178741455">
                      <font>
                         <Font name="Trebuchet MS Bold" size="64.0" />
                      </font>

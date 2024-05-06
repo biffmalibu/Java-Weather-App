@@ -1,3 +1,8 @@
+/*********************************************************************************************************************************
+* File: MainWinController.java                                                                                                   *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to control the main weather window. It is used to display the saved city and its weather data.      *
+**********************************************************************************************************************************/
 package c.finalweatherproject;
 
 import java.io.BufferedReader;
@@ -15,12 +20,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -32,11 +33,11 @@ import javafx.stage.Stage;
 
 public class MainWinController {
     
-    private static CityData city;
-    public static SaveState save;
-    private static Stage stage = new Stage();
+    private static CityData city; // Create a static city object to store the city data
+    public static SaveState save; // Create a static save object to store the save data
+    private static Stage stage = new Stage(); // Create a stage variable to be able to access the stage from other classes
     
-    
+    // Create a bunch of FXML variables to be able to access the FXML elements
     @FXML 
     private Text aqiLevel;
     
@@ -611,41 +612,44 @@ public class MainWinController {
     private Button refreshButton;
     
 
+    /**
+     * This method initializes the main window by loading the save file and populating the labels with the city data,
+     * if the save file does not exist, it will create a new one with default values.
+     * @throws IOException
+     */
     @FXML
     void initialize() throws IOException {
-        File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt");
-        ArrayList<Geolocation> savedCities = getDefaultSavedCities();
-        if (!file.exists()) {
-            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false, "MI", savedCities); // Fill save with default values
+        File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt"); // Create a file object to access the save file
+        ArrayList<Geolocation> savedCities = getDefaultSavedCities(); // Create an arraylist of saved cities with default values
+        if (!file.exists()) { // If the file does not exist, create a new one with default values
+            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", savedCities); // Fill save with default values
             BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
             writer.write(save.getGeolocation().toString());
             writer.write('F');
-            writer.write("\nfalse");
             writer.write("\nMI\n");
             for (int i = 0; i < 3; i++) {
                 writer.write(savedCities.get(i).toString());
             }
-            fCheck.setSelected(true);
-            miCheck.setSelected(true);
+            fCheck.setSelected(true); // Set the default temperature unit to Fahrenheit
+            miCheck.setSelected(true); // Set the default distance unit to Miles
 
-            writer.close();
+            writer.close(); // Close the writer
         }
-        else {
+        else { // If the file exists, read the values from the file and populate the save object with the values
             try {
-                FileReader fr = new FileReader(file); 
-                BufferedReader reader = new BufferedReader(fr);
+                FileReader fr = new FileReader(file);  // Create a file reader object to read the file
+                BufferedReader reader = new BufferedReader(fr); // Create a buffered reader object to read the file
 
-                String name = reader.readLine();
+                String name = reader.readLine(); // Read the current city data from the file
                 String country = reader.readLine();
                 String state = reader.readLine();
                 Double lat = Double.parseDouble(reader.readLine());
                 Double lon = Double.parseDouble(reader.readLine());
-                String deg = reader.readLine();
-                boolean fullTime = Boolean.parseBoolean(reader.readLine());
+                String deg = reader.readLine(); // Read the temperature unit from the file
                 String distance = reader.readLine();
 
-                Geolocation geolocation = new Geolocation(name, country, state, lat, lon);
-                ArrayList<Geolocation> cities = new ArrayList<>();
+                Geolocation geolocation = new Geolocation(name, country, state, lat, lon); // Create a new geolocation object with the read values
+                ArrayList<Geolocation> cities = new ArrayList<>(); // Create an arraylist of geolocations to store the saved cities
                 for(int i = 0; i < 3; i++) {
                     name = reader.readLine();
                     country = reader.readLine();
@@ -653,185 +657,217 @@ public class MainWinController {
                     lat = Double.parseDouble(reader.readLine());
                     lon = Double.parseDouble(reader.readLine());
                     Geolocation savedLocation = new Geolocation(name, country, state, lat, lon);
-                    cities.add(savedLocation);
+                    cities.add(savedLocation); // Add the saved city to the arraylist
                 }
                 reader.close();
-                save = new SaveState(geolocation, deg, fullTime, distance, cities);
+                save = new SaveState(geolocation, deg, distance, cities); // Populate the save object with the read values
 
-                if (save.getDegreeUnits().equals("F")) /// replace here with settings file 
+                if (save.getDegreeUnits().equals("F")) // Set the temperature unit to Fahrenheit if it is saved as Fahrenheit
                     fCheck.setSelected(true);
                 else
-                    cCheck.setSelected(true);
+                    cCheck.setSelected(true); // Set the temperature unit to Celsius if it is saved as Celsius
 
-                if (save.getDistance().equals("MI")) /// replace here with settings file 
+                if (save.getDistance().equals("MI")) // Set the distance unit to Miles if it is saved as Miles
                     miCheck.setSelected(true);
                 else
-                    kmCheck.setSelected(true);
-            } catch(Exception e) {
-                save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", false, "MI", getDefaultSavedCities()); // Fill save with default values
+                    kmCheck.setSelected(true); // Set the distance unit to Kilometers if it is saved as Kilometers
+            } catch(Exception e) { // Catch any exceptions that occur while reading the file and create a new file with default values
+                save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", getDefaultSavedCities()); // Fill save with default values
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
                 writer.write(save.getGeolocation().toString());
                 writer.write('F');
-                writer.write("\nfalse");
                 writer.write("\nMI\n");
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3; i++) { 
                     writer.write(savedCities.get(i).toString());
                 }
 
                 writer.close();
+                fCheck.setSelected(true); // Set the default temperature unit to Fahrenheit
+                miCheck.setSelected(true); // Set the default distance unit to Miles
             }
         }
-        Geolocation location = save.getGeolocation();
-        city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
-        updateLabels();
+        Geolocation location = save.getGeolocation(); // Get the current city data from the save object
+        city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon()); // Populate the city object with the current city data
+        updateLabels(); // Update the labels with the current city data
        
     }
 
 
-   
+   /**
+    * This method sets the temperature unit to Fahrenheit and updates the labels with the new temperature unit
+    */
    @FXML 
-    void fClicked(ActionEvent event) {
-        if (cCheck.isSelected()) {
+    void fClicked() {
+        if (cCheck.isSelected()) { // If the Celsius checkbox is selected, deselect it
             cCheck.setSelected(false);
         }
-        save.setDegreeUnits("F");
-        SaveState.updateFile();
-        updateTempLabels();
+        save.setDegreeUnits("F"); // Set the temperature unit to Fahrenheit
+        SaveState.updateFile(); // Update the save file with the new temperature unit
+        updateTempLabels(); // Update the labels with the new temperature unit
     }
+    /**
+     * This method sets the temperature unit to Celsius and updates the labels with the new temperature unit
+     */
     @FXML 
-    void cClicked(ActionEvent event) {
-        if (fCheck.isSelected()) {
-            fCheck.setSelected(false);
+    void cClicked() {
+        if (fCheck.isSelected()) { // If the Fahrenheit checkbox is selected, deselect it
+            fCheck.setSelected(false); 
         }
-        save.setDegreeUnits("C");
-        SaveState.updateFile();
-        updateTempLabels();
+        save.setDegreeUnits("C"); // Set the temperature unit to Celsius
+        SaveState.updateFile(); // Update the save file with the new temperature unit
+        updateTempLabels(); // Update the labels with the new temperature unit
     }
     
-    
+    /**
+     * This method sets the distance unit to Miles and updates the labels with the new distance unit
+     */
     @FXML 
     void miClicked() {
-        if (kmCheck.isSelected()) {
+        if (kmCheck.isSelected()) { // If the Kilometers checkbox is selected, deselect it
             kmCheck.setSelected(false);
         }
          
-        save.setDistance("MI");
-        SaveState.updateFile();
-        updateDistanceLabels();
+        save.setDistance("MI"); // Set the distance unit to Miles
+        SaveState.updateFile(); // Update the save file with the new distance unit
+        updateDistanceLabels(); // Update the labels with the new distance unit
         
     }
     
+    /**
+     * This method sets the distance unit to Kilometers and updates the labels with the new distance unit
+     */
     @FXML 
-    void kmClicked() {
-        if (miCheck.isSelected()) {
+    void kmClicked() { 
+        if (miCheck.isSelected()) { // If the Miles checkbox is selected, deselect it
             miCheck.setSelected(false);
         }
-        save.setDistance("KM");
-        SaveState.updateFile();
-        updateDistanceLabels();
+        save.setDistance("KM"); // Set the distance unit to Kilometers
+        SaveState.updateFile(); // Update the save file with the new distance unit
+        updateDistanceLabels(); // Update the labels with the new distance unit
     }
+
+    /**
+     * This method opens the saved cities window when the saved cities button is clicked
+     */
     @FXML
-    void openSavedCities(ActionEvent event) {
-        if (stage.getScene() == null) {
+    void openSavedCities() {
+        if (stage.getScene() == null) { // If the stage is not open, open the saved cities window
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("tertiary.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("tertiary.fxml")); // Load the saved cities fxml file
 
-                Scene scene = new Scene(fxmlLoader.load(), 680, 500);
-                stage.setTitle("Saved Cities");
+                Scene scene = new Scene(fxmlLoader.load(), 680, 500); // Create a new scene with the saved cities fxml file
+                stage.setTitle("Saved Cities"); // Set the title of the stage
                 stage.setScene(scene);
-                stage.setOnHidden(events -> {
+                stage.setOnHidden(events -> { // When the stage is closed, set the stage to null
                     stage.setScene(null);
                 });
                 stage.show();
-            } catch (IOException e) {
-                Logger logger = Logger.getLogger(getClass().getName());
-                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            } catch (IOException e) { // Catch any exceptions that occur while opening the saved cities window
+                System.out.println("Error opening saved cities window");
             }
         }
     }
             
-            
+    /**
+     * This method updates the city data with the new city data from the search bar
+     */
     @FXML
     void updateCity() {
         try {
             Geolocation location;
-            location = WeatherAPIDriver.getGeoLocation(search.getText());
+            location = WeatherAPIDriver.getGeoLocation(search.getText()); // Get the new city data from the search bar
             
-            city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon());
-            city.printCityData();
-            save.setGeolocation(location);
-            SaveState.updateFile();
-            updateLabels();
+            city = WeatherAPIDriver.PopulateCityInfo(location.getLat(), location.getLon()); // Populate the city object with the new city data
+            save.setGeolocation(location); // Set the save object's geolocation to the new city data
+            SaveState.updateFile(); // Update the save file with the new city data
+            updateLabels(); // Update the labels with the new city data
             
-        } catch (NullPointerException e) {
-            // do something here
+        } catch (NullPointerException e) { // Catch any exceptions that occur while updating the city data
             search.setText("Error updating city info");
         }
     }
+    /*
+     * Save the current city to the saved cities list
+     */
     @FXML
     void saveCity() {
         SaveState.addSavedCity(save.getGeolocation());
     }
     
+    /**
+     * Refresh the city data
+     */
     @FXML
     void refresh() {
         try {
-            city = WeatherAPIDriver.PopulateCityInfo(save.getGeolocation().getLat(), save.getGeolocation().getLon());
-            city.printCityData();
-            updateLabels();
+            city = WeatherAPIDriver.PopulateCityInfo(save.getGeolocation().getLat(), save.getGeolocation().getLon()); // Populate the city object with the current city data
+            updateLabels(); // Update the labels with the new city data
             
-        } catch (NullPointerException e) {
-            // do something here
+        } catch (NullPointerException e) { // Catch any exceptions that occur while refreshing the city data
             search.setText("Error parsing input.");
         }
     }
+    /**
+     * This method returns default saved cities to be used when the save file does not exist
+     * @return ArrayList<Geolocation> - an arraylist of geolocations with default values
+     */
     private ArrayList<Geolocation> getDefaultSavedCities() {
         ArrayList<Geolocation> cities = new ArrayList<>();
 
-        cities.add(new Geolocation("Paris", "Ile-de-France", "FR", 48.8589, 2.32));
-        cities.add(new Geolocation("New York County", "New York", "US", 40.7127, -74.006));
-        cities.add(new Geolocation("London", "England", "GB", 51.5073, -0.1276));
+        cities.add(new Geolocation("Paris", "Ile-de-France", "FR", 48.8589, 2.32)); // Add Paris to the saved cities
+        cities.add(new Geolocation("New York County", "New York", "US", 40.7127, -74.006)); // Add New York to the saved cities
+        cities.add(new Geolocation("London", "England", "GB", 51.5073, -0.1276)); // Add London to the saved cities
         
         return cities;
     }
+    /**
+     * This method updates all the labels with the current city data
+     */
     private void updateLabels() {
-        Geolocation location = save.getGeolocation();
-        if (!location.getState().equals(""))
+        Geolocation location = save.getGeolocation(); // Get the current city data from the save object
+        if (!location.getState().equals("")) // If the state is not empty, set the city name label to the city name, state, and country
             cityNameLabel.setText(location.getCityName() + ", " + location.getState() + ", " + location.getCountry());
-        else 
+        else  // If the state is empty, set the city name label to the city name and country
             cityNameLabel.setText(location.getCityName() + ", " + location.getCountry());
-        updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt()));
-        humidityLabel.setText("Humidity: " + city.getHumidity() + "%");
-        String main = city.getWeatherMain();
-        weatherLabel.setText(main);
-        if (main.equals("Clouds"))
-            if (!city.getWeatherDesc().equals("overcast clouds")) 
+        updatedLabel.setText("Updated: " + getDateFromEpoch(city.getDt())); // Set the updated label to the current date and time
+        humidityLabel.setText("Humidity: " + city.getHumidity() + "%"); // Set the humidity label to the current humidity
+        String main = city.getWeatherMain(); // Get the main weather description
+        weatherLabel.setText(main); // Set the weather label to the main weather description
+        if (main.equals("Clouds")) 
+            if (!city.getWeatherDesc().equals("overcast clouds")) // If the weather description is not overcast clouds, set the weather label to partly cloudy
                 weatherLabel.setText("Partly Cloudy");
 
         
-        addImages();
-        updateTempLabels();
+        addImages(); // Add the weather images to the labels
+        updateTempLabels(); // Update the temperature labels
 
-        updateAQIData();
-        sunsetLabel.setText("Sunset: " + resolveTimeAMPM(city.getDailyData().get(0).getSunset()));
+        updateAQIData(); // Update the AQI data labels 
+        sunsetLabel.setText("Sunset: " + resolveTimeAMPM(city.getDailyData().get(0).getSunset())); // Set the sun/moon rise/set labels to the correct times
         sunriseLabel.setText("Sunrise: " + resolveTimeAMPM(city.getDailyData().get(0).getSunrise()));
         moonsetLabel.setText("Moonset: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonset()));
         moonriseLabel.setText("Moonrise: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonrise()));
         
-        pressureLabel.setText(city.getPressure() + " mbar");
-        uvLabelNum.setText(String.valueOf(city.getUvi()));
-        uvLabelDesc.setText(getUVDesc(city.getUvi()));
+        pressureLabel.setText(city.getPressure() + " mbar"); // Set the pressure label to the current pressure
+        uvLabelNum.setText(String.valueOf(city.getUvi())); // Set the UV label to the current UV index
+        uvLabelDesc.setText(getUVDesc(city.getUvi())); // Set the UV description label to the current UV description
         
-        updateDistanceLabels();
-        updateDayOfWeekLabels();
+        updateDistanceLabels(); // Update the distance labels
+        updateDayOfWeekLabels(); // Update the day of the week labels
         
     }
+    /**
+     * Add the AQI data to the labels
+     */
     private void updateAQIData() {
         Geolocation location = save.getGeolocation();
         AQIData data = WeatherAPIDriver.getAQIData(location.getLat(), location.getLon());
-        aqiLevel.setText(String.valueOf(data.getMain()));
-        aqiLevelDesc.setText(data.getMainDesc());
+        
+        int main = data.getMain();
+        String mainDesc = data.getMainDesc();
+        aqiLevel.setText(String.valueOf(main));
+        
+        aqiLevelDesc.setText(mainDesc);
         coLabel.setText(String.valueOf(data.getCO()));
         noLabel.setText(String.valueOf(data.getNO()));
         no2Label.setText(String.valueOf(data.getNO2()));
@@ -842,74 +878,94 @@ public class MainWinController {
         pm10Label.setText(String.valueOf(data.getPM10()));
         nh3Label.setText(String.valueOf(data.getNH3()));
     }
+    /**
+     * This method populates the day of week labels with the correct day of the week
+     */
     private void updateDayOfWeekLabels() {
         day1.setText("Today");
         for(int i = 1; i < 8; i++) {
             try {
-                String dayLabel = "day" + (i + 1);
-                Text day = (Text) getClass().getDeclaredField(dayLabel).get(this);
+                String dayLabel = "day" + (i + 1); // Use reflection to get the day of the week labels
+                Text day = (Text) getClass().getDeclaredField(dayLabel).get(this); 
                 day.setText(getDayOfWeek(city.getDailyData().get(i).getDt()));
             } catch (Exception e) {}
         }
     }
+    /**
+     * This method updates the visibility and wind labels with the correct distance unit
+     */
     private void updateDistanceLabels() {
         updateVisibility();
         updateWindInfo();
     }
+    /**
+     * This method updates visibility labels with the correct visibility
+     */
     private void updateVisibility() {
         int vis = city.getVisibility();
         visibilityDescLabel.setText(getVisibilityDesc(vis));
         
-        if (save.getDistance().equals("KM")) {
+        if (save.getDistance().equals("KM")) { // If the distance unit is Kilometers, set the visibility label to the visibility in kilometers
             if (vis != 10000)
                 visibilityLabel.setText(vis/1000 + "Km");
             else
-                visibilityLabel.setText("10+ Km");
+                visibilityLabel.setText("10+ Km"); // Set to 10+ Km if the visibility is 10,000 meters
         }
-        else {
-            if (vis > 9656)
+        else { // If the distance unit is Miles, set the visibility label to the visibility in miles
+            if (vis > 9656) // Set to 6 MI if the visibility is greater than 9656 meters
                 visibilityLabel.setText("6+ MI");
             else {
-                DecimalFormat f = new DecimalFormat("##.00");
-                visibilityLabel.setText(f.format(vis * 0.000621371) + " MI");
+                DecimalFormat f = new DecimalFormat("##.00"); // Set the visibility label to the visibility in miles
+                visibilityLabel.setText(f.format(vis * 0.000621371) + " MI"); // Convert the visibility to miles
             }
         }
     }
+    /**
+     * Updates the wind labels with the correct wind data
+     */
     private void updateWindInfo() {
-        double deg = (city.getWindDegrees() + 180) % 360;
-        double speed = city.getWindSpeed();
-        double gust = city.getWindGust();
+        double deg = (city.getWindDegrees() + 180) % 360; // Invert the wind direction to match the compass
+        double speed = city.getWindSpeed(); // Get the wind speed
+        double gust = city.getWindGust(); // Get the wind gust
         String unit = "";
-        winddirectionLabel.setText(getWindDirection(deg) + ", " + String.format("%.0f", deg) + "°");
-        winddirectionIMG.setRotate(deg);
-        DecimalFormat f = new DecimalFormat("##.00");
-        if (save.getDistance().equals("MI")) {
+        winddirectionLabel.setText(getWindDirection(deg) + ", " + String.format("%.0f", deg) + "°"); // Set the wind direction label to the wind direction
+        winddirectionIMG.setRotate(deg); // Rotate the wind direction image to match the wind direction
+        DecimalFormat f = new DecimalFormat("##.00"); // Set the wind speed and gust labels to the wind speed and gust
+        if (save.getDistance().equals("MI")) { // If the distance unit is Miles, set the wind speed and gust labels to the wind speed and gust in MPH
             unit = " MPH";
-            speed = speed * 2.23694;
-            gust = gust * 2.23694;
+            speed = speed * 2.23694; // Convert the wind speed to MPH
+            gust = gust * 2.23694; // Convert the wind gust to MPH
         }
-        else {
+        else { // If the distance unit is Kilometers, set the wind speed and gust labels to the wind speed and gust in KMH
             unit = " KMH";
-            speed = speed * 3.6;
-            gust = gust * 3.6;
+            speed = speed * 3.6; // Convert the wind speed to KMH
+            gust = gust * 3.6; // Convert the wind gust to KMH
         }
-        windspeedLabel.setText("Wind " + f.format(speed) + unit);
-        gustLabel.setText("Gust: " + f.format(gust) + unit);
+        windspeedLabel.setText("Wind " + f.format(speed) + unit); // Set the wind speed label to the wind speed
+        gustLabel.setText("Gust: " + f.format(gust) + unit); // Set the gust label to the wind gust
     }
     
+    /**
+     * Updates the temperature labels with the correct temperature
+     */
     private void updateTempLabels() {
-        if(save.getDegreeUnits().equals("F")) {
+        if(save.getDegreeUnits().equals("F")) { // If the temperature unit is Fahrenheit, update the labels with Fahrenheit
             updateHourlyFieldsF();
             updateTempFieldsF();
             updateDailyTempLabelsF();
         }
-        else {
+        else { // If the temperature unit is Celsius, update the labels with Celsius
             updateHourlyFieldsC();
             updateTempFieldsC();
             updateDailyTempLabelsC();
         }
     }
    
+    /**
+     * This method returns a description of the visibility based on the visibility value
+     * @param visibility - the visibility value
+     * @return String - the description of the visibility
+     */
     private String getVisibilityDesc(int visibility) {
         visibility = visibility /1000;
         if (visibility >= 0 && visibility <= 3)
@@ -922,6 +978,11 @@ public class MainWinController {
             return "Perfectly Clear";
             
     }
+    /**
+     * Returns the UV description based on the UV index
+     * @param uvi - the UV index
+     * @return String - the UV description
+     */
     private String getUVDesc(double uvi) {
         if (uvi >= 0 && uvi < 3) {
             return "Low";
@@ -936,21 +997,41 @@ public class MainWinController {
         }
     }
 
-    private int getFahrenheit(double k) {
+    /**
+     * Gets the fahrenheit temperature from the kelvin temperature
+     * @param k - the kelvin temperature
+     * @return int - the fahrenheit temperature
+     */
+    private int getFahrenheit(double k) { 
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
+
+    /**
+     * Gets the celsius temperature from the kelvin temperature
+     * @param k - the kelvin temperature
+     * @return int - the celsius temperature
+     */
     private int getCelsius(double k) {
         return (int) Math.rint(k - 273.15);
     }
+
+    /**
+     * Gets the date from the epoch time
+     * @param epochTimeSeconds - the epoch time in seconds
+     * @return Date - the date
+     */
     private Date getDateFromEpoch(int epochTimeSeconds) {
         long epoch = Long.parseLong(String.valueOf(epochTimeSeconds));
         return new Date(epoch * 1000);
     }
     
+    /**
+     * Updates the daily temp labels with fahrenheit
+     */
     private void updateDailyTempLabelsF() {
         ArrayList<CityDaily> cityDaily = city.getDailyData();
         for (int i = 0; i < 8; i++) {
-            try {
+            try { // Use reflection to get the high and low labels
                 String highText = "high" + (i + 1);
                 String lowText = "low" + (i + 1);
                 Text high = (Text) getClass().getDeclaredField(highText).get(this);
@@ -961,12 +1042,16 @@ public class MainWinController {
 
         }
     }
+
+    /**
+     * Updates the daily temp labels with celsius
+     */
     private void updateDailyTempLabelsC() {
         ArrayList<CityDaily> cityDaily = city.getDailyData();
         high1.setText(city.getTempMax() + "°C");
         high1.setText(city.getTempMin() + "°C");
         for (int i = 1; i < 8; i++) {
-            try {
+            try { // Use reflection to get the high and low labels
                 String highText = "high" + (i);
                 String lowText = "low" + (i);
                 Text high = (Text) getClass().getDeclaredField(highText).get(this);
@@ -977,6 +1062,9 @@ public class MainWinController {
 
         }
     }
+    /**
+     * Updates the temp labels with fahrenheit
+     */
     private void updateTempFieldsF() {
         String fahrenheit = "°F";
         temperatureLabel.setText(getFahrenheit(city.getCurTemp()) + fahrenheit);
@@ -984,6 +1072,9 @@ public class MainWinController {
         dewPointLabel.setText("Dew Point: " + getFahrenheit(city.getDewPoint())+ fahrenheit);
         feelsLikeLabel.setText("Feels Like: " + getFahrenheit(city.getFeelsLike()) + fahrenheit);
     }
+    /**
+     * Updates the temp labels with celsius
+     */
     private void updateTempFieldsC() {
         String celsius = "°C";
         temperatureLabel.setText(getCelsius(city.getCurTemp()) + celsius);
@@ -991,11 +1082,14 @@ public class MainWinController {
         dewPointLabel.setText("Dew Point: " + getCelsius(city.getDewPoint()) + celsius);
         feelsLikeLabel.setText("Feels Like: " + getCelsius(city.getFeelsLike()) + celsius);
     }
+    /**
+     * Updates the hourly fields with fahrenheit
+     */
     private void updateHourlyFieldsF() {
         try {
         ArrayList<CityHourly> cityHourly = city.getHourlyData();
 
-        for (int i = 0; i < 37; i++) {
+        for (int i = 0; i < 37; i++) { // Use reflection to get the hourly and hour labels
             String hourlyText = "hourly" + (i + 1);
             String hourText = "hour" + (i + 1);
 
@@ -1007,11 +1101,14 @@ public class MainWinController {
         }
         } catch(Exception e) {}
     }
+    /**
+     * Updates the hourly fields with celsius
+     */
     private void updateHourlyFieldsC() {
         try {
         ArrayList<CityHourly> cityHourly = city.getHourlyData();
 
-        for (int i = 0; i < 37; i++) {
+        for (int i = 0; i < 37; i++) { // Use reflection to get the hourly and hour labels
             String hourlyText = "hourly" + (i + 1);
             String hourText = "hour" + (i + 1);
 
@@ -1024,7 +1121,12 @@ public class MainWinController {
         } catch(Exception e) {}
     }
     
-    private String getWindDirection(double deg) {
+    /**
+     * Gets the wind direction based on the degree
+     * @param deg - the degree
+     * @return String - the wind direction
+     */
+    private String getWindDirection(double deg) { //
         int direction = (int) ((deg + 11.25) % 360) / 45;
         String windDirection;
         switch (direction) {
@@ -1060,6 +1162,11 @@ public class MainWinController {
         return windDirection;
     }
     
+    /**
+     * Gets the time based on the epoch time
+     * @param epoch - the epoch time
+     * @return String - the time
+     */
     private String resolveTimeAMPM(int epoch) {
         // Convert epoch time to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
@@ -1070,6 +1177,11 @@ public class MainWinController {
 
         return hour;
     }
+    /**
+     * Gets the hour based on the epoch time
+     * @param epoch - the epoch time
+     * @return String - the hour
+     */
     private String resolveHourFromEpoch(int epoch) {
         // Convert epoch time to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
@@ -1080,122 +1192,125 @@ public class MainWinController {
 
         return hour;
     }
-    
+    /** 
+     * Adds images to the labels based on the weather data
+     */
     private void addImages() {
-        ArrayList<CityHourly> cityHourly = city.getHourlyData();
-        ArrayList<CityDaily> cityDaily = city.getDailyData();
-        Thread hourlyImagesThread = new Thread(() -> {
-            for (int i = 0; i < 37; i++) {
+        ArrayList<CityHourly> cityHourly = city.getHourlyData(); // Get the hourly data
+        ArrayList<CityDaily> cityDaily = city.getDailyData(); // Get the daily data
+        Thread hourlyImagesThread = new Thread(() -> { // Create a new thread to add the hourly images
+            for (int i = 0; i < 37; i++) { // Loop through the hourly data
                 String imageType = "";
-                int curTime = cityHourly.get(i).getDt();
-                int sunrise = city.getSunrise();
-                int sunset = city.getSunset();
-                if (curTime > sunset) {
+                int curTime = cityHourly.get(i).getDt(); // Get the current time
+                int sunrise = city.getSunrise(); // Get the sunrise and sunset times
+                int sunset = city.getSunset(); // Get the sunrise and sunset times
+                if (curTime > sunset) { // If the current time is after sunset, set the sunrise and sunset to the next day
                     sunset = cityDaily.get(1).getSunset();
                     sunrise = cityDaily.get(1).getSunrise();
                 }
-                boolean isDaytime = curTime > sunrise && curTime < sunset;
-                if (cityHourly.get(i).getWeatherMain().equals("Clear")) {
-                    if (isDaytime) {
+                boolean isDaytime = curTime > sunrise && curTime < sunset; // Check if it is daytime
+                if (cityHourly.get(i).getWeatherMain().equals("Clear")) { // If the weather is clear, set the image to the sun or moon
+                    if (isDaytime) { // If it is daytime, set the image to the sun
                         imageType = "sun.png";
                     } else {
-                        imageType = "moon.png";
+                        imageType = "moon.png"; // If it is nighttime, set the image to the moon
                     }
                 }
-                if (cityHourly.get(i).getWeatherMain().equals("Clouds")) {
+                if (cityHourly.get(i).getWeatherMain().equals("Clouds")) { // If the weather is cloudy, set the image to clouds
                     if (cityHourly.get(i).getWeatherDesc().equals("overcast clouds"))
                         imageType = "clouds.png";
                     else {
-                        if (isDaytime)
+                        if (isDaytime) // If it is daytime, set the image to partly cloudy at day
                             imageType = "partlycloudy.png";
                         else    
-                            imageType = "partiallynight.png";
+                            imageType = "partiallynight.png"; // If it is nighttime, set the image to partially cloudy at night
                     }
 
-                } else if (cityHourly.get(i).getWeatherMain().equals("Rain")) {
+                } else if (cityHourly.get(i).getWeatherMain().equals("Rain")) { // If the weather is rainy, set the image to rain
                     imageType = "rain.png";
-                } else if (cityHourly.get(i).getWeatherMain().equals("Thunderstorm")) {
+                } else if (cityHourly.get(i).getWeatherMain().equals("Thunderstorm")) { // If the weather is a thunderstorm, set the image to lightning
                     imageType = "lightning.png";
-                } else if (cityHourly.get(i).getWeatherMain().equals("Drizzle")) {
+                } else if (cityHourly.get(i).getWeatherMain().equals("Drizzle")) { // If the weather is drizzling, set the image to drizzle
                     imageType = "drizzle.png";
-                } else if (cityHourly.get(i).getWeatherMain().equals("Snow")) {
+                } else if (cityHourly.get(i).getWeatherMain().equals("Snow")) { // If the weather is snowy, set the image to snow
                     imageType = "snow.png";
                 }
-                // Construct the field name dynamically
                 String imgFieldName = "img" + (i + 1);
 
                 try {
                     // Access the ImageView using reflection
                     ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
 
-                    // Construct the file path
-                    File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
-
-                    // Check if file exists before attempting to load the image
-                    if (file.exists()) {
-                        Image image = new Image(file.toURI().toString());
-                        imageView.setImage(image);
+                    File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType); // Construct the file path
+                    if (file.exists()) { // Check if file exists before attempting to load the image
+                        Image image = new Image(file.toURI().toString()); // Load the image
+                        imageView.setImage(image); // Set the image to the image view
                     } else {
-                        System.out.println("File not found: " + file.getAbsolutePath());
+                        System.out.println("File not found: " + file.getAbsolutePath()); // Print an error message if the file is not found
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-        hourlyImagesThread.start();
-        Thread dailyImagesThread = new Thread(() -> {
+        hourlyImagesThread.start(); // Start the hourly images thread
+        Thread dailyImagesThread = new Thread(() -> { // Create a new thread to add the daily images 
             for (int i = 0; i < 8; i++) {
                 String imageType = "";
                 String weatherMain = cityDaily.get(i).getWeatherMain();
                 try {
-                    String popText = "pop" + (i + 1);
+                    String popText = "pop" + (i + 1); // Use reflection to get the pop labels
                     Text pop = (Text) getClass().getDeclaredField(popText).get(this);
                     Double popNum = 100 * cityDaily.get(i).getPop();
-                    if(popNum == 0 || !weatherMain.equals("Rain"))
+                    if(popNum == 0 || !weatherMain.equals("Rain")) // If the chance of precipitation is 0 or the weather is not rainy, set the pop label to empty
                         pop.setText("");
                     else
-                        pop.setText(String.format("%.0f", popNum) + "%");
+                        pop.setText(String.format("%.0f", popNum) + "%"); // Set the pop label to the chance of precipitation
                 } catch (Exception e) {}
-                if (weatherMain.equals("Clear")) {
+                if (weatherMain.equals("Clear")) { // If the weather is clear, set the image to the sun or moon
                     imageType = "clouds.png";
                 }
-                else if (weatherMain.equals("Rain")) {
+                else if (weatherMain.equals("Rain")) { // If the weather is rainy, set the image to rain
                     imageType = "rain.png";
                 }
-                else if (weatherMain.equals("Clouds")) {
+                else if (weatherMain.equals("Clouds")) { // If the weather is cloudy, set the image to clouds
                     imageType = "clouds.png";
                 }
-                else if (weatherMain.equals("Snow")) {
+                else if (weatherMain.equals("Snow")) { // If the weather is snowy, set the image to snow
                     imageType = "snow.png";
                 }
-                else if (weatherMain.equals("Thunderstorm")) {
+                else if (weatherMain.equals("Thunderstorm")) {  // If the weather is a thunderstorm, set the image to lightning
                     imageType = "lightning.png";
                 }
-                else if (weatherMain.equals("Drizzle")) {
+                else if (weatherMain.equals("Drizzle")) { // If the weather is drizzling, set the image to drizzle
                     imageType = "drizzle.png";
                 }
 
-                String imgFieldName = "dimg" + (i + 1);
+                String imgFieldName = "dimg" + (i + 1); // Use reflection to get the daily image views
 
-                try {
+                try { 
                     ImageView imageView = (ImageView) getClass().getDeclaredField(imgFieldName).get(this);
 
                     File file = new File("src/main/resources/c/finalweatherproject/images/" + imageType);
 
-                    if (file.exists()) {
+                    if (file.exists()) { // Check if file exists before attempting to load the image
                         Image image = new Image(file.toURI().toString());
-                        imageView.setImage(image);
+                        imageView.setImage(image); // Set the image to the image view
                     } else {
-                        System.out.println("File not found: " + file.getAbsolutePath());
+                        System.out.println("File not found: " + file.getAbsolutePath()); // Print an error message if the file is not found
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-        dailyImagesThread.start();
+        dailyImagesThread.start(); // Start the daily images thread
     }
+    /**
+     * Gets the day of the week based on the epoch time
+     * @param epochSeconds - the epoch time
+     * @return String - the day of the week
+     */
     public static String getDayOfWeek(long epochSeconds) {
         // Convert epoch time to LocalDateTime
         Instant instant = Instant.ofEpochSecond(epochSeconds);

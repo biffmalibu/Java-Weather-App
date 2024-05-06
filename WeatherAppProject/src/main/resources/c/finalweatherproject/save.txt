@@ -1,16 +1,10 @@
-Boston
-US
-Massachusetts
-42.3554334
--71.060511
+London
+England
+GB
+51.5073
+-0.1276
 F
-false
 MI
-Paris
-Ile-de-France
-FR
-48.8589
-2.32
 New York County
 New York
 US
@@ -21,3 +15,8 @@ England
 GB
 51.5073
 -0.1276
+Delhi
+IN
+Delhi
+28.6517178
+77.2219388

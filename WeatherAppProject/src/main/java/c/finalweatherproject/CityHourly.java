@@ -1,3 +1,8 @@
+/*********************************************************************************************************************************
+* File: CityHourly.java                                                                                                          *
+* Author: Bradford Torpey                                                                                                        *
+* Purpose: This file is used to store the hourly weather data of a city and return the data when needed.                         *
+**********************************************************************************************************************************/
 package c.finalweatherproject;
 
 import java.time.Instant;
@@ -14,7 +19,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author bradf
  */
-public class CityHourly {
+public class CityHourly { // Hourly weather data fields
     private int dt;
     private double curTemp;
     private double feelsLike;
@@ -52,6 +57,9 @@ public class CityHourly {
         this.weatherDesc = weatherDesc;
         this.pop = pop;
     }
+    /**
+     * This method is used to get the hour of the day from the epoch time
+     */
     @Override
     public String toString() {
         return "CityHourly{" +
@@ -72,22 +80,30 @@ public class CityHourly {
                 ", pop=" + pop +
                 '}';
     }
+    /**
+     * This method is used to convert the kelvin temperature to fahrenheit
+     * @param k - The temperature in kelvin
+     * @return int - The temperature in fahrenheit
+     */
     private int getFahrenheit(double k) {
         return (int) Math.rint((k - 273.15) * 9/5 + 32);
     }
     
+    /**
+     * This method is used to resolve the hour from the epoch time
+     * @param epoch - The epoch time
+     * @return String - The hour
+     */
     private String resolveHourFromEpoch(int epoch) {
-        // Convert epoch time to LocalDateTime
-        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault()); // Convert epoch time to LocalDateTime
         
-        // Format the hour part only
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:00");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:00"); // Format the hour part only
         String hour = dateTime.format(formatter);
         
         return hour;
     }
+
     // Getters
-    
     public double getPop() {return pop;}
     
     public int getDt() { return dt; }
