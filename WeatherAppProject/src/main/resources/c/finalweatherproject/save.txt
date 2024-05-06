@@ -1,15 +1,10 @@
-Boston
+Beverly
 US
-Massachusetts
-42.3554334
--71.060511
-F
-MI
-Paris
-Ile-de-France
-FR
-48.8589
-2.32
+
+42.5608
+-70.8759
+C
+KM
 New York County
 New York
 US
@@ -20,3 +15,8 @@ England
 GB
 51.5073
 -0.1276
+Beverly
+US
+
+42.5608
+-70.8759
