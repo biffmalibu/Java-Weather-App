@@ -143,8 +143,11 @@
                                  <children>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/temp.png" />
+                                          <Image url="@images/wind.png" />
                                        </image>
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="4.0" />
+                                       </HBox.margin>
                                     </ImageView>
                                     <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind">
                                        <font>
@@ -432,8 +435,11 @@
                                  <children>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/temp.png" />
+                                          <Image url="@images/wind.png" />
                                        </image>
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="4.0" />
+                                       </HBox.margin>
                                     </ImageView>
                                     <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind">
                                        <font>
@@ -724,8 +730,11 @@
                                  <children>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/temp.png" />
+                                          <Image url="@images/wind.png" />
                                        </image>
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="4.0" />
+                                       </HBox.margin>
                                     </ImageView>
                                     <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind">
                                        <font>
