@@ -184,6 +184,52 @@ public class WeatherAPIDriver {
         }
         return null;
     }
+    public static AQIData getAQIData(Double latitude, Double longitude) {
+        String apiUrl = "https://api.openweathermap.org/data/2.5/air_pollution" +
+                        "?lat=" + latitude +
+                        "&lon=" + longitude +
+                        "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";
+        System.out.println(apiUrl);
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
+
+            JsonArray list = jsonObject.getAsJsonArray("list");
+            JsonObject firstItem = list.get(0).getAsJsonObject();
+
+            JsonObject mainObject = firstItem.getAsJsonObject("main");
+            int aqi = mainObject.get("aqi").getAsInt();
+
+            JsonObject componentsObject = firstItem.getAsJsonObject("components");
+            double co = componentsObject.get("co").getAsDouble();
+            double no = componentsObject.get("no").getAsDouble();
+            double no2 = componentsObject.get("no2").getAsDouble();
+            double o3 = componentsObject.get("o3").getAsDouble();
+            double so2 = componentsObject.get("so2").getAsDouble();
+            double pm2_5 = componentsObject.get("pm2_5").getAsDouble();
+            double pm10 = componentsObject.get("pm10").getAsDouble();
+            double nh3 = componentsObject.get("nh3").getAsDouble();
+
+            return new AQIData(aqi, co, no, no2, o3, so2, pm2_5, pm10, nh3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     private static Geolocation getGeoLocationFromZip(String zip) {
         try {
             String apiUrl = "https://api.openweathermap.org/geo/1.0/zip?zip=" + zip + "&appid=7c05796f88fd31c9a19e5cc4d7b951d7";

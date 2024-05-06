@@ -1,5 +1,6 @@
 c\finalweatherproject\App.class
 c\finalweatherproject\Geolocation.class
+c\finalweatherproject\AQIData.class
 c\finalweatherproject\SaveState.class
 module-info.class
 c\finalweatherproject\MainWinController.class

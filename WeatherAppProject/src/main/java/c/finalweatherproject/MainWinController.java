@@ -36,6 +36,37 @@ public class MainWinController {
     public static SaveState save;
     private static Stage stage = new Stage();
     
+    
+    @FXML 
+    private Text aqiLevel;
+    
+    @FXML 
+    private Text aqiLevelDesc;
+    
+    @FXML 
+    private Text noLabel;
+    
+    @FXML 
+    private Text coLabel;
+    
+    @FXML 
+    private Text o3Label;
+    
+    @FXML 
+    private Text no2Label;
+    
+    @FXML 
+    private Text nh3Label;
+    
+    @FXML 
+    private Text pm25Label;
+    
+    @FXML 
+    private Text pm10Label;
+    
+    @FXML 
+    private Text so2Label;
+            
     @FXML
     private CheckBox kmCheck;
 
@@ -710,7 +741,6 @@ public class MainWinController {
                 stage.setTitle("Saved Cities");
                 stage.setScene(scene);
                 stage.setOnHidden(events -> {
-                    System.out.println("setonhidden");
                     stage.setScene(null);
                 });
                 stage.show();
@@ -783,7 +813,7 @@ public class MainWinController {
         addImages();
         updateTempLabels();
 
-        
+        updateAQIData();
         sunsetLabel.setText("Sunset: " + resolveTimeAMPM(city.getDailyData().get(0).getSunset()));
         sunriseLabel.setText("Sunrise: " + resolveTimeAMPM(city.getDailyData().get(0).getSunrise()));
         moonsetLabel.setText("Moonset: " + resolveTimeAMPM(city.getDailyData().get(0).getMoonset()));
@@ -796,6 +826,21 @@ public class MainWinController {
         updateDistanceLabels();
         updateDayOfWeekLabels();
         
+    }
+    private void updateAQIData() {
+        Geolocation location = save.getGeolocation();
+        AQIData data = WeatherAPIDriver.getAQIData(location.getLat(), location.getLon());
+        aqiLevel.setText(String.valueOf(data.getMain()));
+        aqiLevelDesc.setText(data.getMainDesc());
+        coLabel.setText(String.valueOf(data.getCO()));
+        noLabel.setText(String.valueOf(data.getNO()));
+        no2Label.setText(String.valueOf(data.getNO2()));
+        o3Label.setText(String.valueOf(data.getO3()));
+        coLabel.setText(String.valueOf(data.getCO()));
+        so2Label.setText(String.valueOf(data.getSO2()));
+        pm25Label.setText(String.valueOf(data.getPM2_5()));
+        pm10Label.setText(String.valueOf(data.getPM10()));
+        nh3Label.setText(String.valueOf(data.getNH3()));
     }
     private void updateDayOfWeekLabels() {
         day1.setText("Today");
