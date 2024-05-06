@@ -1267,17 +1267,72 @@
                   </VBox>
                   <VBox layoutX="512.0" layoutY="10.0" maxWidth="269.0" minWidth="187.0" prefHeight="246.0" prefWidth="269.0">
                      <children>
-                        <HBox layoutX="20.0" layoutY="96.0" maxHeight="75.0" maxWidth="187.0" minWidth="260.0" prefHeight="75.0" prefWidth="194.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
+                        <VBox maxHeight="75.0" maxWidth="260.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" />
+                              <Insets left="10.0" />
                            </VBox.margin>
-                        </HBox>
+                           <children>
+                              <HBox prefHeight="23.0" prefWidth="100.0">
+                                 <children>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets left="7.0" top="1.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@images/insight.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Weather Insights">
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="2.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Text fx:id="summaryLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="Expect a day of partly cloudy, with rain in the afternoon" wrappingWidth="128.95164489746094">
+                                             <VBox.margin>
+                                                <Insets left="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/cloudCropped.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Text fx:id="cloudCoverLabel" fill="#cfcfcf" strokeType="OUTSIDE" strokeWidth="0.0" text="100%" wrappingWidth="49.506959438323975">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="5.0" top="2.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                         <VBox prefHeight="167.0" prefWidth="259.0" style="-fx-background-color: rgb(34, 41, 69); -fx-background-radius: 20px;">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                            <VBox.margin>
-                              <Insets left="10.0" />
+                              <Insets left="10.0" top="10.0" />
                            </VBox.margin>
                            <children>
                               <HBox prefHeight="23.0" prefWidth="100.0">

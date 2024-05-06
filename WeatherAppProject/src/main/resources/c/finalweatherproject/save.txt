@@ -1,8 +1,8 @@
-London
-England
-GB
-51.5073
--0.1276
+Boston
+US
+Massachusetts
+42.3554334
+-71.060511
 F
 MI
 New York County

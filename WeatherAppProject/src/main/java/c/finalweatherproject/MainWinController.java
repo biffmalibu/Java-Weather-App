@@ -39,6 +39,12 @@ public class MainWinController {
     
     // Create a bunch of FXML variables to be able to access the FXML elements
     @FXML 
+    private Text summaryLabel;
+    
+    @FXML
+    private Text cloudCoverLabel;
+    
+    @FXML 
     private Text aqiLevel;
     
     @FXML 
@@ -855,6 +861,10 @@ public class MainWinController {
         updateDistanceLabels(); // Update the distance labels
         updateDayOfWeekLabels(); // Update the day of the week labels
         
+        CityDaily daily = city.getDailyData().get(0);
+        summaryLabel.setText(daily.getSummary() + ".");
+        cloudCoverLabel.setText(daily.getClouds() + "%");
+        
     }
     /**
      * Add the AQI data to the labels
@@ -862,12 +872,8 @@ public class MainWinController {
     private void updateAQIData() {
         Geolocation location = save.getGeolocation();
         AQIData data = WeatherAPIDriver.getAQIData(location.getLat(), location.getLon());
-        
-        int main = data.getMain();
-        String mainDesc = data.getMainDesc();
-        aqiLevel.setText(String.valueOf(main));
-        
-        aqiLevelDesc.setText(mainDesc);
+        aqiLevel.setText(String.valueOf(data.getMain()));
+        aqiLevelDesc.setText(data.getMainDesc());
         coLabel.setText(String.valueOf(data.getCO()));
         noLabel.setText(String.valueOf(data.getNO()));
         no2Label.setText(String.valueOf(data.getNO2()));
