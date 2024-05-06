@@ -28,7 +28,8 @@ public class App extends Application {
         this.stage = stage;
         this.stage.setTitle("Weather Info");
         this.stage.setScene(scene);
-        this.stage.show();
+        this.stage.setResizable(false); // Disable resizing
+        this.stage.show(); 
     }
 
     static void setRoot(String fxml) throws IOException {

@@ -768,6 +768,7 @@ public class MainWinController {
                 stage.setOnHidden(events -> { // When the stage is closed, set the stage to null
                     stage.setScene(null);
                 });
+                stage.setResizable(false); // Disable resizing
                 stage.show();
             } catch (IOException e) { // Catch any exceptions that occur while opening the saved cities window
                 System.out.println("Error opening saved cities window");
