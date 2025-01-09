@@ -30,9 +30,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class MainWinController {
-    
+    private ScheduledExecutorService scheduler; // Used for auto updates
+    private long lastRefreshTime = 0;
     private static CityData city; // Create a static city object to store the city data
     public static SaveState save; // Create a static save object to store the save data
     private static Stage stage = new Stage(); // Create a stage variable to be able to access the stage from other classes
@@ -97,6 +103,9 @@ public class MainWinController {
     
     @FXML 
     private CheckBox cCheck;
+    
+    @FXML
+    private CheckBox autoUpdateCheck;
 
     @FXML
     private Text hour10;
@@ -632,19 +641,39 @@ public class MainWinController {
      */
     @FXML
     void initialize() throws IOException {
+        scheduler = Executors.newScheduledThreadPool(1);
+
+        // Add listener to autoUpdateCheck
+        autoUpdateCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    startScheduledTask();
+                } else {
+                    stopScheduledTask();
+                }
+            }
+        });
+
+        // Start the task if autoUpdateCheck is already selected
+        if (autoUpdateCheck.isSelected()) {
+            startScheduledTask();
+        }
         File file = new File("src\\main\\resources\\c\\finalweatherproject\\save.txt"); // Create a file object to access the save file
         ArrayList<Geolocation> savedCities = getDefaultSavedCities(); // Create an arraylist of saved cities with default values
         if (!file.exists()) { // If the file does not exist, create a new one with default values
-            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", savedCities); // Fill save with default values
+            save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", false, savedCities); // Fill save with default values
             BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
             writer.write(save.getGeolocation().toString());
             writer.write('F');
             writer.write("\nMI\n");
+            writer.write("false\n");
             for (int i = 0; i < 3; i++) {
                 writer.write(savedCities.get(i).toString());
             }
             fCheck.setSelected(true); // Set the default temperature unit to Fahrenheit
             miCheck.setSelected(true); // Set the default distance unit to Miles
+            autoUpdateCheck.setSelected(false);
 
             writer.close(); // Close the writer
         }
@@ -660,6 +689,7 @@ public class MainWinController {
                 Double lon = Double.parseDouble(reader.readLine());
                 String deg = reader.readLine(); // Read the temperature unit from the file
                 String distance = reader.readLine();
+                boolean autoUpdateStatus = Boolean.parseBoolean(reader.readLine());
 
                 Geolocation geolocation = new Geolocation(name, country, state, lat, lon); // Create a new geolocation object with the read values
                 ArrayList<Geolocation> cities = new ArrayList<>(); // Create an arraylist of geolocations to store the saved cities
@@ -673,8 +703,8 @@ public class MainWinController {
                     cities.add(savedLocation); // Add the saved city to the arraylist
                 }
                 reader.close();
-                save = new SaveState(geolocation, deg, distance, cities); // Populate the save object with the read values
-
+                save = new SaveState(geolocation, deg, distance, autoUpdateStatus, cities); // Populate the save object with the read values
+                autoUpdateCheck.setSelected(save.getAutoUpdateStatus());
                 if (save.getDegreeUnits().equals("F")) // Set the temperature unit to Fahrenheit if it is saved as Fahrenheit
                     fCheck.setSelected(true);
                 else
@@ -685,11 +715,12 @@ public class MainWinController {
                 else
                     kmCheck.setSelected(true); // Set the distance unit to Kilometers if it is saved as Kilometers
             } catch(Exception e) { // Catch any exceptions that occur while reading the file and create a new file with default values
-                save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", getDefaultSavedCities()); // Fill save with default values
+                save = new SaveState(WeatherAPIDriver.getGeoLocation("Boston"), "F", "MI", false, getDefaultSavedCities()); // Fill save with default values
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // Write default values to file
                 writer.write(save.getGeolocation().toString());
                 writer.write('F');
                 writer.write("\nMI\n");
+                writer.write("false\n");
                 for (int i = 0; i < 3; i++) { 
                     writer.write(savedCities.get(i).toString());
                 }
@@ -697,6 +728,7 @@ public class MainWinController {
                 writer.close();
                 fCheck.setSelected(true); // Set the default temperature unit to Fahrenheit
                 miCheck.setSelected(true); // Set the default distance unit to Miles
+                autoUpdateCheck.setSelected(false);
             }
         }
         Geolocation location = save.getGeolocation(); // Get the current city data from the save object
@@ -709,6 +741,15 @@ public class MainWinController {
    @FXML 
    void searchClicked() {
        search.selectAll();
+   
+   }
+   /**
+    * This method sets the users auto update option upon being clicked. 
+    */
+   @FXML
+   void autoUpdateCheckClicked() {
+       save.setAutoUpdateStatus(autoUpdateCheck.isSelected());
+       SaveState.updateFile();
    }
    /**
     * This method sets the temperature unit to Fahrenheit and updates the labels with the new temperature unit
@@ -801,6 +842,7 @@ public class MainWinController {
             SaveState.updateFile(); // Update the save file with the new city data
             App.getStage().setTitle(save.getGeolocation().getCityName() + " " + save.getGeolocation().getState() + ", " + save.getGeolocation().getCountry() + " Weather Info");
             updateLabels(); // Update the labels with the new city data
+            lastRefreshTime = 0;
             
         } catch (NullPointerException e) { // Catch any exceptions that occur while updating the city data
             search.setText("Error updating city info");
@@ -819,13 +861,31 @@ public class MainWinController {
      */
     @FXML
     void refresh() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastRefreshTime < 5 * 60 * 1000) {
+            return; // Skip if called within the last 5 minutes
+        }
+        lastRefreshTime = currentTime;
+
         try {
+            System.out.println("Refreshing... API Called");
             city = WeatherAPIDriver.PopulateCityInfo(save.getGeolocation().getLat(), save.getGeolocation().getLon()); // Populate the city object with the current city data
             updateLabels(); // Update the labels with the new city data
-            
         } catch (NullPointerException e) { // Catch any exceptions that occur while refreshing the city data
             search.setText("Error parsing input.");
         }
+    }
+    private void startScheduledTask() {
+        scheduler.scheduleAtFixedRate(() -> {
+            if (autoUpdateCheck.isSelected()) {
+                refresh();
+            }
+        }, 0, 5, TimeUnit.MINUTES);
+    }
+
+    private void stopScheduledTask() {
+        scheduler.shutdownNow();
+        scheduler = Executors.newScheduledThreadPool(1); // Reinitialize the scheduler
     }
     /**
      * This method returns default saved cities to be used when the save file does not exist

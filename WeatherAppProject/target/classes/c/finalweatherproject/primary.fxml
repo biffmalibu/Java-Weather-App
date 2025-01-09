@@ -48,7 +48,7 @@
             </Button>
             <Button fx:id="savedCities" mnemonicParsing="false" onAction="#openSavedCities" prefHeight="26.0" prefWidth="81.0" text="Saved Cities">
                <HBox.margin>
-                  <Insets left="249.0" top="2.0" />
+                  <Insets left="252.0" top="2.0" />
                </HBox.margin>
             </Button>
          </children>
@@ -1658,9 +1658,17 @@
                   <Insets left="30.0" top="2.0" />
                </HBox.margin>
             </HBox>
+            <HBox prefHeight="25.0" prefWidth="109.0">
+               <children>
+                  <CheckBox fx:id="autoUpdateCheck" mnemonicParsing="false" onAction="#autoUpdateCheckClicked" prefHeight="17.0" prefWidth="99.0" text="Auto-Update" textFill="#cfcfcf" />
+               </children>
+               <HBox.margin>
+                  <Insets left="418.0" top="2.0" />
+               </HBox.margin>
+            </HBox>
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveCity" text="Save">
                <HBox.margin>
-                  <Insets bottom="2.0" left="527.0" />
+                  <Insets bottom="2.0" />
                </HBox.margin>
             </Button>
          </children>

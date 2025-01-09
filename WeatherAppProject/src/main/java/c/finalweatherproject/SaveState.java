@@ -19,14 +19,16 @@ public class SaveState { // Save state fields
     private static Geolocation homeTown;
     private static String degreeUnits;
     private static String distance;
+    private static boolean autoUpdateStatus;
     private static ArrayList<Geolocation> savedCities;
 
     // Constructor
-    public SaveState(Geolocation homeTown, String degreeUnits, String distance, ArrayList<Geolocation> savedCities) { 
+    public SaveState(Geolocation homeTown, String degreeUnits, String distance, boolean autoUpdateStatus, ArrayList<Geolocation> savedCities) { 
         this.homeTown = homeTown;
         this.degreeUnits = degreeUnits;
         this.distance = distance;
         this.savedCities = savedCities;
+        this.autoUpdateStatus = autoUpdateStatus;
     }
     
     // Getters
@@ -34,6 +36,7 @@ public class SaveState { // Save state fields
     public String getDegreeUnits() {return degreeUnits;}
     public String getDistance() {return distance;}
     public ArrayList<Geolocation>  getSavedCities() {return savedCities;}
+    public boolean getAutoUpdateStatus() {return autoUpdateStatus;}
     
     // Setters
     public void setGeolocation(Geolocation homeTown) {
@@ -47,6 +50,9 @@ public class SaveState { // Save state fields
     }
     public void setSavedCities(ArrayList<Geolocation> savedCities) {
         this.savedCities = savedCities;
+    }
+    public void setAutoUpdateStatus(boolean autoUpdateStatus) {
+        this.autoUpdateStatus = autoUpdateStatus;
     }
     
     /**
@@ -86,6 +92,7 @@ public class SaveState { // Save state fields
             writer.write(homeTown.toString());
             writer.write(degreeUnits);
             writer.write("\n" + distance +"\n");
+            writer.write(String.valueOf(autoUpdateStatus + "\n"));
             for (int i = 0; i < 3; i++) { // Write saved cities to file
                 writer.write(savedCities.get(i).toString());
             }
